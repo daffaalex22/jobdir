@@ -14,6 +14,7 @@ func NewRoute() *echo.Echo {
 	ev1.POST("users/register", controllers.RegisterController)
 	ev1.GET("users/:userId", controllers.DetailUserController)
 	ev1.DELETE("users/:userId", controllers.DeleteUserController)
+	ev1.PUT("users/:userId", controllers.UpdateUserController)
 
 	return e
 }
