@@ -70,7 +70,7 @@ func DetailUserController(c echo.Context) error {
 		})
 	}
 
-	users := []users.User{}
+	users := users.User{}
 
 	result := configs.DB.First(&users, userId)
 
@@ -86,13 +86,50 @@ func DetailUserController(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response.BaseResponse{
 		Code:    http.StatusOK,
-		Message: "Berhasil mendapatkan data user",
+		Message: "Berhasil mendapatkan detail data user",
 		Data:    users,
 	})
 }
 
-// (&users.User{}, userId)
-// users.User{Id: userId}
+func DeleteUserController(c echo.Context) error {
+	userId, err := strconv.Atoi(c.Param("userId"))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+			Code:    http.StatusInternalServerError,
+			Message: "Gagal konversi userId",
+			Data:    nil,
+		})
+	}
+
+	users := users.User{}
+	result := configs.DB.First(&users, userId)
+
+	if result.Error != nil {
+		return c.JSON(http.StatusNotFound, response.BaseResponse{
+			Code:    http.StatusNotFound,
+			Message: "Tidak ada data tersebut di DB",
+			Data:    nil,
+		})
+	}
+
+	result = configs.DB.Delete(&users, []int{userId})
+
+	if result.Error != nil {
+		if result.Error != gorm.ErrRecordNotFound {
+			return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "Error ketika input mendapatkan data user dari DB",
+				Data:    nil,
+			})
+		}
+	}
+
+	return c.JSON(http.StatusOK, response.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "Berhasil menghapus data user berikut",
+		Data:    users,
+	})
+}
 
 func GetUserController(c echo.Context) error {
 
