@@ -69,12 +69,30 @@ func DetailUserController(c echo.Context) error {
 			Data:    nil,
 		})
 	}
+
+	users := []users.User{}
+
+	result := configs.DB.First(&users, userId)
+
+	if result.Error != nil {
+		if result.Error != gorm.ErrRecordNotFound {
+			return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "Error ketika input mendapatkan data user dari DB",
+				Data:    nil,
+			})
+		}
+	}
+
 	return c.JSON(http.StatusOK, response.BaseResponse{
 		Code:    http.StatusOK,
-		Message: "Berhasil",
-		Data:    users.User{Id: userId},
+		Message: "Berhasil mendapatkan data user",
+		Data:    users,
 	})
 }
+
+// (&users.User{}, userId)
+// users.User{Id: userId}
 
 func GetUserController(c echo.Context) error {
 
