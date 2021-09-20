@@ -72,12 +72,11 @@ func UpdateUserController(c echo.Context) error {
 		})
 	}
 
-	userDB.Name = userUpdate.Name
-	userDB.Password = userUpdate.Password
-	userDB.Address = userUpdate.Address
-	userDB.Email = userUpdate.Email
-
-	configs.DB.Save(&userDB)
+	configs.DB.Model(&userDB).Updates(users.User{
+		Name:     userUpdate.Name,
+		Password: userUpdate.Password,
+		Address:  userUpdate.Address,
+		Email:    userUpdate.Email})
 
 	return c.JSON(http.StatusOK, response.BaseResponse{
 		Code:    http.StatusOK,
