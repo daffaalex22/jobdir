@@ -16,7 +16,7 @@ func NewRoute() *echo.Echo {
 	ev1 := e.Group("api/v1/")
 
 	// User
-	ev1.GET("users", controllers.GetUserController)
+	ev1.GET("users", controllers.GetUserController, jwt)
 	ev1.POST("users/login", controllers.LoginController)
 	ev1.POST("users/register", controllers.RegisterController)
 	ev1.GET("users/:userId", controllers.DetailUserController, jwt)
