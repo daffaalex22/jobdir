@@ -1,0 +1,4 @@
+package constants
+
+const SECRET_JWT_USER = "KECOAK#22"
+const SECRET_JWT_ADMIN = "CUCUNGUKJENGKE"

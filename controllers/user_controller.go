@@ -89,6 +89,23 @@ func LoginController(c echo.Context) error {
 	userLogin := users.UserLogin{}
 	c.Bind(&userLogin)
 	// login
+	user := users.User{}
+	result := configs.DB.Where("email = ? AND password = ?", userLogin.Email, userLogin.Password).First(&user)
+
+	if result.Error != nil {
+		if result.Error != gorm.ErrRecordNotFound {
+			return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "Error ketika mengecek database untuk body yang dikirim",
+				Data:    nil,
+			})
+		}
+		return c.JSON(http.StatusForbidden, response.BaseResponse{
+			Code:    http.StatusForbidden,
+			Message: "Username atau Password Salah!",
+			Data:    nil,
+		})
+	}
 
 	return c.JSON(http.StatusOK, response.BaseResponse{
 		Code:    http.StatusOK,
