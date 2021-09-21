@@ -9,6 +9,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+	"main.go/middlewares"
 )
 
 func RegisterController(c echo.Context) error {
@@ -89,10 +90,37 @@ func LoginController(c echo.Context) error {
 	userLogin := users.UserLogin{}
 	c.Bind(&userLogin)
 	// login
+	user := users.User{}
+	result := configs.DB.Where("email = ? AND password = ?", userLogin.Email, userLogin.Password).First(&user)
+
+	if result.Error != nil {
+		if result.Error != gorm.ErrRecordNotFound {
+			return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "Error ketika mengecek database untuk body yang dikirim",
+				Data:    nil,
+			})
+		}
+		return c.JSON(http.StatusForbidden, response.BaseResponse{
+			Code:    http.StatusForbidden,
+			Message: "Username atau Password Salah!",
+			Data:    nil,
+		})
+	}
+
+	token, err := middlewares.GenerateTokenJWT(user.Id)
+
+	if err != nil {
+		return c.JSON(http.StatusForbidden, response.BaseResponse{
+			Code:    http.StatusForbidden,
+			Message: "Error ketika membuat Token",
+			Data:    nil,
+		})
+	}
 
 	return c.JSON(http.StatusOK, response.BaseResponse{
 		Code:    http.StatusOK,
-		Message: "Berhasil",
+		Message: "Login Berhasil! Token: " + token,
 		Data:    userLogin,
 	})
 }
