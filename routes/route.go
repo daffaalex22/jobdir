@@ -26,5 +26,6 @@ func NewRoute() *echo.Echo {
 	// Job
 	ev1.GET("jobs", controllers.GetJobController)
 	ev1.GET("jobs/:jobId", controllers.DetailJobController)
+	ev1.POST("jobs", controllers.PostJobController)
 	return e
 }

@@ -13,6 +13,42 @@ import (
 	"gorm.io/gorm"
 )
 
+func PostJobController(c echo.Context) error {
+	var jobPost jobs.JobPost
+	c.Bind(&jobPost)
+
+	// validasi
+	if jobPost.Title == "" {
+		return c.JSON(http.StatusBadRequest, response.BaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "Title masih kosong",
+			Data:    nil,
+		})
+	}
+
+	// etc
+
+	var jobDB jobs.Job
+	jobDB.Title = jobPost.Title
+	jobDB.Category = jobPost.Category
+	jobDB.JobDesc = jobPost.JobDesc
+
+	result := configs.DB.Create(&jobDB)
+	if result.Error != nil {
+		return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+			Code:    http.StatusInternalServerError,
+			Message: "Error ketika input data user ke DB",
+			Data:    nil,
+		})
+	}
+
+	return c.JSON(http.StatusOK, response.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "Berhasil Post Pekerjaan!",
+		Data:    jobDB,
+	})
+}
+
 func GetJobController(c echo.Context) error {
 
 	jobs := []jobs.Job{}
