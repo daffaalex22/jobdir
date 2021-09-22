@@ -4,7 +4,6 @@ import (
 	"MyProject/ProjectALTA/JobDir/configs"
 	"MyProject/ProjectALTA/JobDir/models/jobs"
 	"MyProject/ProjectALTA/JobDir/models/response"
-	"MyProject/ProjectALTA/JobDir/models/users"
 
 	"net/http"
 	"strconv"
@@ -37,7 +36,7 @@ func PostJobController(c echo.Context) error {
 	if result.Error != nil {
 		return c.JSON(http.StatusInternalServerError, response.BaseResponse{
 			Code:    http.StatusInternalServerError,
-			Message: "Error ketika input data user ke DB",
+			Message: "Error ketika input data Job ke DB",
 			Data:    nil,
 		})
 	}
@@ -82,7 +81,7 @@ func DetailJobController(c echo.Context) error {
 		})
 	}
 
-	job := users.User{}
+	job := jobs.Job{}
 
 	result := configs.DB.First(&job, jobId)
 
@@ -100,5 +99,37 @@ func DetailJobController(c echo.Context) error {
 		Code:    http.StatusOK,
 		Message: "Berhasil mendapatkan detail data job",
 		Data:    job,
+	})
+}
+
+func DeleteAllJobsController(c echo.Context) error {
+
+	jobs := []jobs.Job{}
+	result := configs.DB.Find(&jobs)
+
+	if result.Error != nil {
+		return c.JSON(http.StatusNotFound, response.BaseResponse{
+			Code:    http.StatusNotFound,
+			Message: "Tidak ada data di DB",
+			Data:    nil,
+		})
+	}
+
+	result = configs.DB.Unscoped().Delete(&jobs)
+
+	if result.Error != nil {
+		if result.Error != gorm.ErrRecordNotFound {
+			return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "Error ketika input mendapatkan data Job dari DB",
+				Data:    nil,
+			})
+		}
+	}
+
+	return c.JSON(http.StatusOK, response.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "Berhasil menghapus data Job berikut",
+		Data:    jobs,
 	})
 }
