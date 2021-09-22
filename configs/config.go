@@ -28,5 +28,5 @@ func InitDB() {
 }
 
 func Migration() {
-	DB.AutoMigrate(&users.User{}, &jobs.Job{})
+	DB.AutoMigrate(&users.User{}, &jobs.Job{}, &jobs.JobDesc{})
 }

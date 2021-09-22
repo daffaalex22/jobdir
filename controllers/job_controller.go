@@ -71,6 +71,29 @@ func GetJobController(c echo.Context) error {
 	})
 }
 
+func GetJobDescController(c echo.Context) error {
+
+	jobdescs := []jobs.JobDesc{}
+
+	result := configs.DB.Find(&jobdescs)
+
+	if result.Error != nil {
+		if result.Error != gorm.ErrRecordNotFound {
+			return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "Error ketika input mendapatkan data jobdescs dari DB",
+				Data:    nil,
+			})
+		}
+	}
+
+	return c.JSON(http.StatusOK, response.BaseResponse{
+		Code:    http.StatusOK,
+		Message: "Berhasil mendapatkan data jobdescs",
+		Data:    jobdescs,
+	})
+}
+
 func DetailJobController(c echo.Context) error {
 	jobId, err := strconv.Atoi(c.Param("jobId"))
 	if err != nil {
