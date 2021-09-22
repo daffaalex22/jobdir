@@ -3,6 +3,7 @@ package configs
 import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"main.go/models/jobs"
 	"main.go/models/users"
 )
 
@@ -27,5 +28,5 @@ func InitDB() {
 }
 
 func Migration() {
-	DB.AutoMigrate(&users.User{})
+	DB.AutoMigrate(&users.User{}, &jobs.Job{})
 }

@@ -23,5 +23,8 @@ func NewRoute() *echo.Echo {
 	ev1.DELETE("users/:userId", controllers.DeleteUserController)
 	ev1.PUT("users/:userId", controllers.UpdateUserController)
 
+	// Job
+	ev1.GET("jobs", controllers.GetJobController)
+	ev1.GET("jobs/:jobId", controllers.DetailJobController)
 	return e
 }

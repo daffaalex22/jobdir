@@ -108,7 +108,7 @@ func LoginController(c echo.Context) error {
 		})
 	}
 
-	token, err := middlewares.GenerateTokenJWT(user.Id)
+	token, err := middlewares.GenerateTokenJWT(user.ID)
 
 	if err != nil {
 		return c.JSON(http.StatusForbidden, response.BaseResponse{
