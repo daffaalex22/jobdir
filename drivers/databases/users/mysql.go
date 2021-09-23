@@ -77,3 +77,14 @@ func (rep *MysqlUserRepository) UpdateUser(ctx context.Context, domain users.Dom
 
 	return user.ToDomain(), nil
 }
+
+func (rep *MysqlUserRepository) DeleteUser(ctx context.Context, id int) (users.Domain, error) {
+	var user Users
+	result := rep.Conn.Where("id = ?", id).Delete(&user)
+
+	if result.Error != nil {
+		return users.Domain{}, result.Error
+	}
+
+	return user.ToDomain(), nil
+}

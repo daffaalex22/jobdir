@@ -14,4 +14,5 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.GET("users/:userId", cl.UserController.GetUserById)
 	e.GET("users", cl.UserController.GetAllUser)
 	e.PUT("users", cl.UserController.UpdateUser)
+	e.DELETE("users/:userId", cl.UserController.DeleteUser)
 }

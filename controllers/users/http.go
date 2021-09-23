@@ -80,3 +80,20 @@ func (UserController UserController) UpdateUser(c echo.Context) error {
 
 	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
 }
+
+func (UserController UserController) DeleteUser(c echo.Context) error {
+	fmt.Println("DeleteUser")
+
+	userId, err := strconv.Atoi(c.Param("userId"))
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	ctx := c.Request().Context()
+	user, err := UserController.UserUseCase.DeleteUser(ctx, userId)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
+}

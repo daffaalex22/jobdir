@@ -21,6 +21,7 @@ type Usecase interface {
 	GetUserById(ctx context.Context, id int) (Domain, error)
 	GetAllUser(ctx context.Context) ([]Domain, error)
 	UpdateUser(ctx context.Context, domain Domain) (Domain, error)
+	DeleteUser(ctx context.Context, id int) (Domain, error)
 }
 
 type Repository interface {
@@ -28,4 +29,5 @@ type Repository interface {
 	GetUserById(ctx context.Context, id int) (Domain, error)
 	GetAllUser(ctx context.Context) ([]Domain, error)
 	UpdateUser(ctx context.Context, domain Domain) (Domain, error)
+	DeleteUser(ctx context.Context, id int) (Domain, error)
 }

@@ -73,3 +73,15 @@ func (uc *UserUsecase) UpdateUser(c context.Context, domain Domain) (Domain, err
 
 	return user, nil
 }
+
+func (uc *UserUsecase) DeleteUser(c context.Context, id int) (Domain, error) {
+	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
+	defer cancel()
+
+	user, err := uc.Repo.DeleteUser(ctx, id)
+	if err != nil {
+		return Domain{}, err
+	}
+
+	return user, nil
+}
