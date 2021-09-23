@@ -27,3 +27,10 @@ func FromDomain(domain users.Domain) UserResponse {
 		UpdatedAt: domain.UpdatedAt,
 	}
 }
+
+func ListFromDomain(domain []users.Domain) (response []UserResponse) {
+	for _, user := range domain {
+		response = append(response, FromDomain(user))
+	}
+	return
+}

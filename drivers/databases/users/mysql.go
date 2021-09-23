@@ -38,3 +38,14 @@ func (rep *MysqlUserRepository) GetById(ctx context.Context, id int) (users.Doma
 
 	return user.ToDomain(), nil
 }
+
+func (rep *MysqlUserRepository) GetAll(ctx context.Context) ([]users.Domain, error) {
+	var user []Users
+	result := rep.Conn.Find(&user)
+
+	if result.Error != nil {
+		return []users.Domain{}, result.Error
+	}
+
+	return ListToDomain(user), nil
+}

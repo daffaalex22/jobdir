@@ -19,9 +19,11 @@ type Domain struct {
 type Usecase interface {
 	Login(ctx context.Context, email string, password string) (Domain, error)
 	GetById(ctx context.Context, id int) (Domain, error)
+	GetAll(ctx context.Context) ([]Domain, error)
 }
 
 type Repository interface {
 	Login(ctx context.Context, email string, password string) (Domain, error)
 	GetById(ctx context.Context, id int) (Domain, error)
+	GetAll(ctx context.Context) ([]Domain, error)
 }

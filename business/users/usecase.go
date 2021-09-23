@@ -48,3 +48,15 @@ func (uc *UserUsecase) GetById(c context.Context, id int) (Domain, error) {
 
 	return user, nil
 }
+
+func (uc *UserUsecase) GetAll(c context.Context) ([]Domain, error) {
+	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
+	defer cancel()
+
+	user, err := uc.Repo.GetAll(ctx)
+	if err != nil {
+		return []Domain{}, err
+	}
+
+	return user, nil
+}

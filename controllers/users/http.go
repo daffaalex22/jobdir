@@ -40,16 +40,28 @@ func (UserController UserController) Login(c echo.Context) error {
 func (UserController UserController) GetById(c echo.Context) error {
 	fmt.Println("GetById")
 
-	userId, error := strconv.Atoi(c.Param("userId"))
-	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	userId, err := strconv.Atoi(c.Param("userId"))
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
 	ctx := c.Request().Context()
 	user, err := UserController.UserUseCase.GetById(ctx, userId)
 	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
 	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
+}
+
+func (UserController UserController) GetAll(c echo.Context) error {
+	fmt.Println("GetAllUser")
+
+	ctx := c.Request().Context()
+	user, err := UserController.UserUseCase.GetAll(ctx)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccessResponse(c, responses.ListFromDomain(user))
 }
