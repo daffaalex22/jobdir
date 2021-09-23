@@ -49,3 +49,31 @@ func (rep *MysqlUserRepository) GetAllUser(ctx context.Context) ([]users.Domain,
 
 	return ListToDomain(user), nil
 }
+
+func (rep *MysqlUserRepository) UpdateUser(ctx context.Context, domain users.Domain) (users.Domain, error) {
+	var user Users
+	result := rep.Conn.First(&user, "email = ? AND password = ?", domain.Email, domain.Password)
+
+	if result.Error != nil {
+		return users.Domain{}, result.Error
+	}
+
+	result = rep.Conn.Model(&user).Updates(Users{
+		Email:    domain.Email,
+		Password: domain.Password,
+		Name:     domain.Name,
+		Address:  domain.Address,
+	})
+
+	if result.Error != nil {
+		return users.Domain{}, result.Error
+	}
+
+	result = rep.Conn.Save(&user)
+
+	if result.Error != nil {
+		return users.Domain{}, result.Error
+	}
+
+	return user.ToDomain(), nil
+}

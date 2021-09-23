@@ -23,7 +23,7 @@ func (user *Users) ToDomain() users.Domain {
 		Id:        user.Id,
 		Name:      user.Name,
 		Email:     user.Email,
-		Address:   user.Password,
+		Address:   user.Address,
 		Password:  user.Password,
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,

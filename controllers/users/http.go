@@ -65,3 +65,18 @@ func (UserController UserController) GetAllUser(c echo.Context) error {
 
 	return controllers.NewSuccessResponse(c, responses.ListFromDomain(user))
 }
+
+func (UserController UserController) UpdateUser(c echo.Context) error {
+	fmt.Println("UpdateUser")
+
+	userUpdate := requests.UserUpdate{}
+	c.Bind(&userUpdate)
+
+	ctx := c.Request().Context()
+	user, err := UserController.UserUseCase.UpdateUser(ctx, userUpdate.ToDomain())
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
+}

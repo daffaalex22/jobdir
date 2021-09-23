@@ -60,3 +60,16 @@ func (uc *UserUsecase) GetAllUser(c context.Context) ([]Domain, error) {
 
 	return user, nil
 }
+
+func (uc *UserUsecase) UpdateUser(c context.Context, domain Domain) (Domain, error) {
+	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
+	defer cancel()
+
+	// domain.UpdatedAt = time.Now()
+	user, err := uc.Repo.UpdateUser(ctx, domain)
+	if err != nil {
+		return Domain{}, err
+	}
+
+	return user, nil
+}
