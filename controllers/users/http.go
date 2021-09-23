@@ -3,6 +3,7 @@ package users
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"main.go/business/users"
@@ -30,6 +31,23 @@ func (UserController UserController) Login(c echo.Context) error {
 	user, error := UserController.UserUseCase.Login(ctx, userLogin.Email, userLogin.Password)
 
 	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
+}
+
+func (UserController UserController) GetById(c echo.Context) error {
+	fmt.Println("GetById")
+
+	userId, error := strconv.Atoi(c.Param("userId"))
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	ctx := c.Request().Context()
+	user, err := UserController.UserUseCase.GetById(ctx, userId)
+	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 

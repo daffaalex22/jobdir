@@ -36,3 +36,15 @@ func (uc *UserUsecase) Login(ctx context.Context, email string, password string)
 
 	return user, nil
 }
+
+func (uc *UserUsecase) GetById(c context.Context, id int) (Domain, error) {
+	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
+	defer cancel()
+
+	user, err := uc.Repo.GetById(ctx, id)
+	if err != nil {
+		return Domain{}, err
+	}
+
+	return user, nil
+}
