@@ -28,7 +28,7 @@ func (rep *MysqlUserRepository) Login(ctx context.Context, email string, passwor
 	return user.ToDomain(), nil
 }
 
-func (rep *MysqlUserRepository) GetById(ctx context.Context, id int) (users.Domain, error) {
+func (rep *MysqlUserRepository) GetUserById(ctx context.Context, id int) (users.Domain, error) {
 	var user Users
 	result := rep.Conn.First(&user, "id = ?", id)
 
@@ -39,7 +39,7 @@ func (rep *MysqlUserRepository) GetById(ctx context.Context, id int) (users.Doma
 	return user.ToDomain(), nil
 }
 
-func (rep *MysqlUserRepository) GetAll(ctx context.Context) ([]users.Domain, error) {
+func (rep *MysqlUserRepository) GetAllUser(ctx context.Context) ([]users.Domain, error) {
 	var user []Users
 	result := rep.Conn.Find(&user)
 

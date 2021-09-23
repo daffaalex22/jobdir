@@ -37,7 +37,7 @@ func (UserController UserController) Login(c echo.Context) error {
 	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
 }
 
-func (UserController UserController) GetById(c echo.Context) error {
+func (UserController UserController) GetUserById(c echo.Context) error {
 	fmt.Println("GetById")
 
 	userId, err := strconv.Atoi(c.Param("userId"))
@@ -46,7 +46,7 @@ func (UserController UserController) GetById(c echo.Context) error {
 	}
 
 	ctx := c.Request().Context()
-	user, err := UserController.UserUseCase.GetById(ctx, userId)
+	user, err := UserController.UserUseCase.GetUserById(ctx, userId)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
@@ -54,11 +54,11 @@ func (UserController UserController) GetById(c echo.Context) error {
 	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
 }
 
-func (UserController UserController) GetAll(c echo.Context) error {
+func (UserController UserController) GetAllUser(c echo.Context) error {
 	fmt.Println("GetAllUser")
 
 	ctx := c.Request().Context()
-	user, err := UserController.UserUseCase.GetAll(ctx)
+	user, err := UserController.UserUseCase.GetAllUser(ctx)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}

@@ -37,11 +37,11 @@ func (uc *UserUsecase) Login(ctx context.Context, email string, password string)
 	return user, nil
 }
 
-func (uc *UserUsecase) GetById(c context.Context, id int) (Domain, error) {
+func (uc *UserUsecase) GetUserById(c context.Context, id int) (Domain, error) {
 	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
 	defer cancel()
 
-	user, err := uc.Repo.GetById(ctx, id)
+	user, err := uc.Repo.GetUserById(ctx, id)
 	if err != nil {
 		return Domain{}, err
 	}
@@ -49,11 +49,11 @@ func (uc *UserUsecase) GetById(c context.Context, id int) (Domain, error) {
 	return user, nil
 }
 
-func (uc *UserUsecase) GetAll(c context.Context) ([]Domain, error) {
+func (uc *UserUsecase) GetAllUser(c context.Context) ([]Domain, error) {
 	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
 	defer cancel()
 
-	user, err := uc.Repo.GetAll(ctx)
+	user, err := uc.Repo.GetAllUser(ctx)
 	if err != nil {
 		return []Domain{}, err
 	}
