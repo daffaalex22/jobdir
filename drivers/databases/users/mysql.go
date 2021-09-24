@@ -88,3 +88,20 @@ func (rep *MysqlUserRepository) DeleteUser(ctx context.Context, id int) (users.D
 
 	return user.ToDomain(), nil
 }
+
+func (rep *MysqlUserRepository) RegisterUser(ctx context.Context, domain users.Domain) (users.Domain, error) {
+	user := Users{
+		Email:    domain.Email,
+		Password: domain.Password,
+		Name:     domain.Name,
+		Address:  domain.Address,
+	}
+
+	result := rep.Conn.Create(&user)
+
+	if result.Error != nil {
+		return users.Domain{}, result.Error
+	}
+
+	return user.ToDomain(), nil
+}

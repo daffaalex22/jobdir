@@ -8,8 +8,11 @@ import (
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 	"main.go/app/routes"
+	_jobUsecase "main.go/business/jobs"
 	_userUsecase "main.go/business/users"
+	_jobController "main.go/controllers/jobs"
 	_userController "main.go/controllers/users"
+	_jobdb "main.go/drivers/databases/jobs"
 	_userdb "main.go/drivers/databases/users"
 	_mysqlDriver "main.go/drivers/mysql"
 )
@@ -27,6 +30,7 @@ func init() {
 
 func DbMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_userdb.Users{})
+	db.AutoMigrate(&_jobdb.Jobs{})
 }
 
 func main() {
@@ -48,8 +52,13 @@ func main() {
 	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext)
 	userController := _userController.NewUserController(userUseCase)
 
+	jobRepository := _jobdb.NewMysqlJobRepository(Conn)
+	jobUseCase := _jobUsecase.NewJobUsecase(jobRepository, timeoutContext)
+	jobController := _jobController.NewJobController(jobUseCase)
+
 	routesInit := routes.ControllerList{
 		UserController: *userController,
+		JobController:  *jobController,
 	}
 
 	routesInit.RouteRegister(e)

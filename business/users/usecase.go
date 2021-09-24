@@ -85,3 +85,22 @@ func (uc *UserUsecase) DeleteUser(c context.Context, id int) (Domain, error) {
 
 	return user, nil
 }
+
+func (uc *UserUsecase) RegisterUser(ctx context.Context, domain Domain) (Domain, error) {
+
+	if domain.Email == "" {
+		return Domain{}, errors.New("email empty")
+	}
+
+	if domain.Password == "" {
+		return Domain{}, errors.New("password empty")
+	}
+
+	user, err := uc.Repo.RegisterUser(ctx, domain)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
+	return user, nil
+}

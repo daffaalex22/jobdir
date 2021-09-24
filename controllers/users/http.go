@@ -97,3 +97,18 @@ func (UserController UserController) DeleteUser(c echo.Context) error {
 
 	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
 }
+
+func (UserController UserController) RegisterUser(c echo.Context) error {
+	fmt.Println("RegisterUser")
+	userRegister := requests.UserRegister{}
+	c.Bind(&userRegister)
+
+	ctx := c.Request().Context()
+	user, error := UserController.UserUseCase.RegisterUser(ctx, userRegister.ToDomain())
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
+}
