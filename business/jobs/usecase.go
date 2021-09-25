@@ -102,3 +102,15 @@ func (uc *JobUsecase) SearchJobs(c context.Context, title string) ([]Domain, err
 
 	return job, nil
 }
+
+func (uc *JobUsecase) FilterJobByCategory(c context.Context, categoryId int) ([]Domain, error) {
+	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
+	defer cancel()
+
+	job, err := uc.Repo.FilterJobByCategory(ctx, categoryId)
+	if err != nil {
+		return []Domain{}, err
+	}
+
+	return job, nil
+}

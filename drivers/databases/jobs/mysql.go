@@ -111,7 +111,16 @@ func (rep *MysqlJobRepository) SearchJobs(ctx context.Context, title string) ([]
 	}
 
 	result = rep.Conn.Where("title LIKE ?", "%"+title+"%").Find(&job)
+	if result.Error != nil {
+		return []jobs.Domain{}, result.Error
+	}
 
+	return ListToDomain(job), nil
+}
+
+func (rep *MysqlJobRepository) FilterJobByCategory(ctx context.Context, categoryId int) ([]jobs.Domain, error) {
+	var job []Jobs
+	result := rep.Conn.Where("category_id = ?", categoryId).Find(&job)
 	if result.Error != nil {
 		return []jobs.Domain{}, result.Error
 	}

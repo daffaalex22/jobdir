@@ -29,6 +29,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.GET("jobs/:jobId", cl.JobController.GetJobById)
 	e.DELETE("jobs/:jobId", cl.JobController.DeleteJobById)
 	e.GET("jobs/result", cl.JobController.SearchJobs)
+	e.GET("jobs/result", cl.JobController.FilterJobByCategory)
 
 	//CATEGORY
 	e.POST("jobs/categories", cl.CategoryController.CreateCategory)

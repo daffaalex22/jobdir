@@ -30,6 +30,7 @@ type Usecase interface {
 	DeleteJobById(ctx context.Context, id int) (Domain, error)
 	GetAllJobs(ctx context.Context) ([]Domain, error)
 	SearchJobs(ctx context.Context, title string) ([]Domain, error)
+	FilterJobByCategory(ctx context.Context, categoryId int) ([]Domain, error)
 	FillJobs(ctx context.Context, categories []CategoryDomain) ([]CategoryDomain, error)
 }
 
@@ -40,5 +41,6 @@ type Repository interface {
 	DeleteJobById(ctx context.Context, id int) (Domain, error)
 	GetAllJobs(ctx context.Context) ([]Domain, error)
 	SearchJobs(ctx context.Context, title string) ([]Domain, error)
+	FilterJobByCategory(ctx context.Context, categoryId int) ([]Domain, error)
 	FillJobs(ctx context.Context, categories []CategoryDomain) ([]CategoryDomain, error)
 }

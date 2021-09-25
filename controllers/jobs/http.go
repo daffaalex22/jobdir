@@ -121,3 +121,20 @@ func (JobController JobController) SearchJobs(c echo.Context) error {
 
 	return controllers.NewSuccessResponse(c, responses.ListFromDomain(job))
 }
+
+func (JobController JobController) FilterJobByCategory(c echo.Context) error {
+	fmt.Println("GetAllJobs")
+
+	categoryId, err := strconv.Atoi(c.QueryParam("categoryId"))
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	ctx := c.Request().Context()
+	job, err := JobController.JobUseCase.FilterJobByCategory(ctx, categoryId)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccessResponse(c, responses.ListFromDomain(job))
+}
