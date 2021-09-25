@@ -42,7 +42,7 @@ func FromDomain(domain users.Domain) Users {
 		Id:        domain.Id,
 		Name:      domain.Name,
 		Email:     domain.Email,
-		Address:   domain.Password,
+		Address:   domain.Address,
 		Password:  domain.Password,
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,

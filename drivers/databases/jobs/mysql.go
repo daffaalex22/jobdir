@@ -31,12 +31,6 @@ func (rep *MysqlJobRepository) FillJobs(ctx context.Context, categories []jobs.C
 }
 
 func (rep *MysqlJobRepository) CreateJob(ctx context.Context, domain jobs.Domain) (jobs.Domain, error) {
-	// job := Jobs{
-	// 	Title:    domain.Title,
-	// 	Category: domain.Category,
-	// 	JobDesc:  domain.JobDesc,
-	// }
-
 	job := FromDomain(domain)
 
 	result := rep.Conn.Create(&job)
