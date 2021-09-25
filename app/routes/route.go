@@ -2,13 +2,15 @@ package routes
 
 import (
 	"github.com/labstack/echo/v4"
+	"main.go/controllers/categories"
 	"main.go/controllers/jobs"
 	"main.go/controllers/users"
 )
 
 type ControllerList struct {
-	UserController users.UserController
-	JobController  jobs.JobController
+	UserController     users.UserController
+	JobController      jobs.JobController
+	CategoryController categories.CategoryController
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
@@ -21,9 +23,16 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.DELETE("users/:userId", cl.UserController.DeleteUser)
 
 	// JOB
-	e.POST("jobs/post", cl.JobController.CreateJob)
+	e.POST("jobs", cl.JobController.CreateJob)
 	e.DELETE("jobs", cl.JobController.DeleteAllJobs)
 	e.GET("jobs", cl.JobController.GetAllJobs)
 	e.GET("jobs/:jobId", cl.JobController.GetJobById)
 	e.DELETE("jobs/:jobId", cl.JobController.DeleteJobById)
+	e.GET("jobs/result", cl.JobController.SearchJobs)
+
+	//CATEGORY
+	e.POST("jobs/categories", cl.CategoryController.CreateCategory)
+	e.GET("jobs/categories", cl.CategoryController.GetAllCategory)
+	e.GET("jobs/categories/:categoryId", cl.CategoryController.GetCategoryById)
+	e.DELETE("jobs/categories/:categoryId", cl.CategoryController.DeleteCategoryById)
 }

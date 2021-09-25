@@ -8,23 +8,23 @@ import (
 )
 
 type Jobs struct {
-	Id        int `gorm:"primaryKey"`
-	Title     string
-	Category  string
-	JobDesc   string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	Id         int `gorm:"primaryKey"`
+	Title      string
+	CategoryId int
+	JobDesc    string
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	DeletedAt  gorm.DeletedAt `gorm:"index"`
 }
 
 func (job *Jobs) ToDomain() jobs.Domain {
 	return jobs.Domain{
-		Id:        job.Id,
-		Title:     job.Title,
-		Category:  job.Category,
-		JobDesc:   job.JobDesc,
-		CreatedAt: job.CreatedAt,
-		UpdatedAt: job.UpdatedAt,
+		Id:         job.Id,
+		Title:      job.Title,
+		CategoryId: job.CategoryId,
+		JobDesc:    job.JobDesc,
+		CreatedAt:  job.CreatedAt,
+		UpdatedAt:  job.UpdatedAt,
 	}
 }
 
@@ -37,11 +37,18 @@ func ListToDomain(jobs []Jobs) (result []jobs.Domain) {
 
 func FromDomain(domain jobs.Domain) Jobs {
 	return Jobs{
-		Id:        domain.Id,
-		Title:     domain.Title,
-		Category:  domain.Category,
-		JobDesc:   domain.JobDesc,
-		CreatedAt: domain.CreatedAt,
-		UpdatedAt: domain.UpdatedAt,
+		Id:         domain.Id,
+		Title:      domain.Title,
+		CategoryId: domain.CategoryId,
+		JobDesc:    domain.JobDesc,
+		CreatedAt:  domain.CreatedAt,
+		UpdatedAt:  domain.UpdatedAt,
 	}
+}
+
+func ListFromDomain(jobs []jobs.Domain) (result []Jobs) {
+	for _, job := range jobs {
+		result = append(result, FromDomain(job))
+	}
+	return
 }

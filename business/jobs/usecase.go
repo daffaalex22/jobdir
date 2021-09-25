@@ -18,6 +18,16 @@ func NewJobUsecase(repo Repository, timeout time.Duration) Usecase {
 	}
 }
 
+func (uc *JobUsecase) FillJobs(ctx context.Context, categories []CategoryDomain) ([]CategoryDomain, error) {
+
+	res, err := uc.Repo.FillJobs(ctx, categories)
+	if err != nil {
+		return categories, err
+	}
+
+	return res, nil
+}
+
 func (uc *JobUsecase) CreateJob(ctx context.Context, domain Domain) (Domain, error) {
 
 	if domain.Title == "" {
@@ -79,4 +89,16 @@ func (uc *JobUsecase) DeleteJobById(c context.Context, id int) (Domain, error) {
 	}
 
 	return Job, nil
+}
+
+func (uc *JobUsecase) SearchJobs(c context.Context, title string) ([]Domain, error) {
+	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
+	defer cancel()
+
+	job, err := uc.Repo.SearchJobs(ctx, title)
+	if err != nil {
+		return []Domain{}, err
+	}
+
+	return job, nil
 }

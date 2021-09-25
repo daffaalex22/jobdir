@@ -58,12 +58,13 @@ func (rep *MysqlUserRepository) UpdateUser(ctx context.Context, domain users.Dom
 		return users.Domain{}, result.Error
 	}
 
-	result = rep.Conn.Model(&user).Updates(Users{
-		Email:    domain.Email,
-		Password: domain.Password,
-		Name:     domain.Name,
-		Address:  domain.Address,
-	})
+	result = rep.Conn.Model(&user).Updates(FromDomain(domain))
+	// Users{
+	// 	Email:    domain.Email,
+	// 	Password: domain.Password,
+	// 	Name:     domain.Name,
+	// 	Address:  domain.Address,
+	// })
 
 	if result.Error != nil {
 		return users.Domain{}, result.Error
@@ -90,12 +91,14 @@ func (rep *MysqlUserRepository) DeleteUser(ctx context.Context, id int) (users.D
 }
 
 func (rep *MysqlUserRepository) RegisterUser(ctx context.Context, domain users.Domain) (users.Domain, error) {
-	user := Users{
-		Email:    domain.Email,
-		Password: domain.Password,
-		Name:     domain.Name,
-		Address:  domain.Address,
-	}
+	// user := Users{
+	// 	Email:    domain.Email,
+	// 	Password: domain.Password,
+	// 	Name:     domain.Name,
+	// 	Address:  domain.Address,
+	// }
+
+	user := FromDomain(domain)
 
 	result := rep.Conn.Create(&user)
 

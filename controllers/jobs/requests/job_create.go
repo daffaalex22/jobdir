@@ -5,15 +5,22 @@ import (
 )
 
 type JobCreate struct {
-	Title    string `json:"title"`
-	Category string `json:"category"`
-	JobDesc  string `json:"jobDesc"`
+	Title      string `json:"title"`
+	CategoryId int    `json:"categoryId"`
+	JobDesc    string `json:"jobDesc"`
 }
 
 func (job *JobCreate) ToDomain() jobs.Domain {
 	return jobs.Domain{
-		Title:    job.Title,
-		Category: job.Category,
-		JobDesc:  job.JobDesc,
+		Title:      job.Title,
+		CategoryId: job.CategoryId,
+		JobDesc:    job.JobDesc,
 	}
+}
+
+func ListToDomain(jobs []JobCreate) (result []jobs.Domain) {
+	for _, job := range jobs {
+		result = append(result, job.ToDomain())
+	}
+	return
 }

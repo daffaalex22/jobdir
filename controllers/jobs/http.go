@@ -22,6 +22,18 @@ func NewJobController(JobUseCase jobs.Usecase) *JobController {
 	}
 }
 
+// func (JobController JobController) FillJobs(c echo.Context, category []jobs.CategoryDomain) error {
+
+// 	ctx := c.Request().Context()
+// 	res, err := JobController.JobUseCase.FillJobs(ctx, category)
+
+// 	if err != nil {
+// 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+// 	}
+
+// 	return controllers.NewSuccessResponse(c, responses.ToListCategoryDomain(res))
+// }
+
 func (JobController JobController) CreateJob(c echo.Context) error {
 	fmt.Println("CreateJob")
 	jobCreate := requests.JobCreate{}
@@ -94,4 +106,18 @@ func (JobController JobController) DeleteJobById(c echo.Context) error {
 	}
 
 	return controllers.NewSuccessResponse(c, responses.FromDomain(job))
+}
+
+func (JobController JobController) SearchJobs(c echo.Context) error {
+	fmt.Println("GetAllJobs")
+
+	title := c.QueryParam("title")
+
+	ctx := c.Request().Context()
+	job, err := JobController.JobUseCase.SearchJobs(ctx, title)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccessResponse(c, responses.ListFromDomain(job))
 }

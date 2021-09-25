@@ -8,10 +8,13 @@ import (
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 	"main.go/app/routes"
+	_categoryUsecase "main.go/business/categories"
 	_jobUsecase "main.go/business/jobs"
 	_userUsecase "main.go/business/users"
+	_categoryController "main.go/controllers/categories"
 	_jobController "main.go/controllers/jobs"
 	_userController "main.go/controllers/users"
+	_categorydb "main.go/drivers/databases/categories"
 	_jobdb "main.go/drivers/databases/jobs"
 	_userdb "main.go/drivers/databases/users"
 	_mysqlDriver "main.go/drivers/mysql"
@@ -31,6 +34,7 @@ func init() {
 func DbMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_userdb.Users{})
 	db.AutoMigrate(&_jobdb.Jobs{})
+	db.AutoMigrate(&_categorydb.Categories{})
 }
 
 func main() {
@@ -56,9 +60,14 @@ func main() {
 	jobUseCase := _jobUsecase.NewJobUsecase(jobRepository, timeoutContext)
 	jobController := _jobController.NewJobController(jobUseCase)
 
+	categoryRepository := _categorydb.NewMysqlCategoryRepository(Conn)
+	categoryUseCase := _categoryUsecase.NewCategoryUsecase(categoryRepository, timeoutContext)
+	categoryController := _categoryController.NewCategoryController(categoryUseCase)
+
 	routesInit := routes.ControllerList{
-		UserController: *userController,
-		JobController:  *jobController,
+		UserController:     *userController,
+		JobController:      *jobController,
+		CategoryController: *categoryController,
 	}
 
 	routesInit.RouteRegister(e)
