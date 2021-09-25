@@ -4,6 +4,9 @@ import (
 	"context"
 	"errors"
 	"time"
+
+	"github.com/spf13/viper"
+	"main.go/app/middlewares"
 )
 
 type UserUsecase struct {
@@ -29,11 +32,18 @@ func (uc *UserUsecase) Login(ctx context.Context, email string, password string)
 	}
 
 	user, err := uc.Repo.Login(ctx, email, password)
-
 	if err != nil {
 		return Domain{}, err
 	}
+	JWTConf := middlewares.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
 
+	user.Token, err = JWTConf.GenerateTokenJWT(user.Id)
+	if err != nil {
+		return Domain{}, err
+	}
 	return user, nil
 }
 

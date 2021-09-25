@@ -2,6 +2,8 @@ package routes
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/spf13/viper"
 	"main.go/controllers/categories"
 	"main.go/controllers/jobs"
 	"main.go/controllers/users"
@@ -14,11 +16,14 @@ type ControllerList struct {
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
+
+	jwt := middleware.JWT([]byte(viper.GetString(`jwt.secret`)))
+
 	// USER
 	e.POST("users/login", cl.UserController.Login)
 	e.POST("users/register", cl.UserController.RegisterUser)
-	e.GET("users/:userId", cl.UserController.GetUserById)
-	e.GET("users", cl.UserController.GetAllUser)
+	e.GET("users/:userId", cl.UserController.GetUserById, jwt)
+	e.GET("users", cl.UserController.GetAllUser, jwt)
 	e.PUT("users", cl.UserController.UpdateUser)
 	e.DELETE("users/:userId", cl.UserController.DeleteUser)
 
