@@ -21,13 +21,14 @@ type Admins struct {
 
 func (admin *Admins) ToDomain() admins.Domain {
 	return admins.Domain{
-		Id:        admin.Id,
-		Name:      admin.Name,
-		Email:     admin.Email,
-		Address:   admin.Address,
-		Password:  admin.Password,
-		CreatedAt: admin.CreatedAt,
-		UpdatedAt: admin.UpdatedAt,
+		Id:          admin.Id,
+		Name:        admin.Name,
+		Email:       admin.Email,
+		Address:     admin.Address,
+		CompanyName: admin.CompanyName,
+		Password:    admin.Password,
+		CreatedAt:   admin.CreatedAt,
+		UpdatedAt:   admin.UpdatedAt,
 	}
 }
 
@@ -40,12 +41,20 @@ func ListToDomain(admins []Admins) (result []admins.Domain) {
 
 func FromDomain(domain admins.Domain) Admins {
 	return Admins{
-		Id:        domain.Id,
-		Name:      domain.Name,
-		Email:     domain.Email,
-		Address:   domain.Address,
-		Password:  domain.Password,
-		CreatedAt: domain.CreatedAt,
-		UpdatedAt: domain.UpdatedAt,
+		Id:          domain.Id,
+		Name:        domain.Name,
+		Email:       domain.Email,
+		Address:     domain.Address,
+		CompanyName: domain.CompanyName,
+		Password:    domain.Password,
+		CreatedAt:   domain.CreatedAt,
+		UpdatedAt:   domain.UpdatedAt,
 	}
+}
+
+func ListFromDomain(admins []admins.Domain) (result []Admins) {
+	for _, admin := range admins {
+		result = append(result, FromDomain(admin))
+	}
+	return
 }

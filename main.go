@@ -10,14 +10,17 @@ import (
 	"main.go/app/routes"
 	_adminUsecase "main.go/business/admins"
 	_categoryUsecase "main.go/business/categories"
+	_companyUsecase "main.go/business/companies"
 	_jobUsecase "main.go/business/jobs"
 	_userUsecase "main.go/business/users"
 	_adminController "main.go/controllers/admins"
 	_categoryController "main.go/controllers/categories"
+	_companyController "main.go/controllers/companies"
 	_jobController "main.go/controllers/jobs"
 	_userController "main.go/controllers/users"
 	_admindb "main.go/drivers/databases/admins"
 	_categorydb "main.go/drivers/databases/categories"
+	_companydb "main.go/drivers/databases/companies"
 	_jobdb "main.go/drivers/databases/jobs"
 	_userdb "main.go/drivers/databases/users"
 	_mysqlDriver "main.go/drivers/mysql"
@@ -39,6 +42,7 @@ func DbMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_jobdb.Jobs{})
 	db.AutoMigrate(&_categorydb.Categories{})
 	db.AutoMigrate(&_admindb.Admins{})
+	db.AutoMigrate(&_companydb.Companies{})
 }
 
 func main() {
@@ -73,11 +77,16 @@ func main() {
 	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext)
 	adminController := _adminController.NewAdminController(adminUseCase)
 
+	companyRepository := _companydb.NewMysqlCompanyRepository(Conn)
+	companyUseCase := _companyUsecase.NewCompanyUsecase(companyRepository, timeoutContext)
+	companyController := _companyController.NewCompanyController(companyUseCase)
+
 	routesInit := routes.ControllerList{
 		UserController:     *userController,
 		JobController:      *jobController,
 		CategoryController: *categoryController,
 		AdminController:    *adminController,
+		CompanyController:  *companyController,
 	}
 
 	routesInit.RouteRegister(e)

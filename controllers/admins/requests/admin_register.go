@@ -12,9 +12,10 @@ type AdminRegister struct {
 
 func (admin *AdminRegister) ToDomain() admins.Domain {
 	return admins.Domain{
-		Name:     admin.Name,
-		Email:    admin.Email,
-		Address:  admin.Address,
-		Password: admin.Password,
+		Name:        admin.Name,
+		Email:       admin.Email,
+		Address:     admin.Address,
+		Password:    admin.Password,
+		CompanyName: admin.CompanyName,
 	}
 }

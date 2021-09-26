@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 	"main.go/controllers/admins"
 	"main.go/controllers/categories"
+	"main.go/controllers/companies"
 	"main.go/controllers/jobs"
 	"main.go/controllers/users"
 )
@@ -15,6 +16,7 @@ type ControllerList struct {
 	AdminController    admins.AdminController
 	JobController      jobs.JobController
 	CategoryController categories.CategoryController
+	CompanyController  companies.CompanyController
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
@@ -37,6 +39,14 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.PUT("admins", cl.AdminController.UpdateAdmin)
 	e.DELETE("admins/:adminId", cl.AdminController.DeleteAdmin)
 	e.DELETE("admins", cl.AdminController.HardDeleteAllAdmins)
+
+	// COMPANY
+	e.POST("companies/register", cl.CompanyController.RegisterCompany)
+	e.GET("companies/:companyI", cl.CompanyController.GetCompanyById)
+	e.GET("companies", cl.CompanyController.GetAllCompany)
+	e.PUT("companies", cl.CompanyController.UpdateCompany)
+	e.DELETE("companies/:companiyId", cl.CompanyController.DeleteCompany)
+	e.DELETE("companies", cl.CompanyController.HardDeleteAllCompanies)
 
 	// JOB
 	e.POST("jobs", cl.JobController.CreateJob)
