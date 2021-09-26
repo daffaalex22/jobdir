@@ -6,14 +6,15 @@ import (
 )
 
 type Domain struct {
-	Id        int
-	Name      string
-	Email     string
-	Address   string
-	Password  string
-	Token     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Id          int
+	Name        string
+	Email       string
+	Address     string
+	CompanyName string
+	Password    string
+	Token       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 type Usecase interface {
@@ -23,6 +24,7 @@ type Usecase interface {
 	GetAllAdmin(ctx context.Context) ([]Domain, error)
 	UpdateAdmin(ctx context.Context, domain Domain) (Domain, error)
 	DeleteAdmin(ctx context.Context, id int) (Domain, error)
+	HardDeleteAllAdmins(ctx context.Context) error
 }
 
 type Repository interface {
@@ -32,4 +34,5 @@ type Repository interface {
 	GetAllAdmin(ctx context.Context) ([]Domain, error)
 	UpdateAdmin(ctx context.Context, domain Domain) (Domain, error)
 	DeleteAdmin(ctx context.Context, id int) (Domain, error)
+	HardDeleteAllAdmins(ctx context.Context) error
 }
