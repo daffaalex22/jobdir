@@ -43,11 +43,7 @@ func (rep *MysqlCategoryRepository) GetCategoryById(ctx context.Context, id int)
 
 func (rep *MysqlCategoryRepository) GetAllCategory(ctx context.Context) ([]categories.Domain, error) {
 	var category []Categories
-	result := rep.Conn.Find(&category)
-
-	// for _, v := range category {
-	// 	v.Jobs = jobs.
-	// }
+	result := rep.Conn.Preload("Jobs").Find(&category)
 
 	if result.Error != nil {
 		return []categories.Domain{}, result.Error
