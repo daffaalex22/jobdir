@@ -5,6 +5,7 @@ import (
 
 	"gorm.io/gorm"
 	"main.go/business/admins"
+	"main.go/drivers/databases/jobs"
 )
 
 type Admins struct {
@@ -14,6 +15,7 @@ type Admins struct {
 	Address     string
 	Password    string
 	CompanyName string
+	JobsCreated []jobs.Jobs `gorm:"foreignKey:CreatedBy;references:Id"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
@@ -26,6 +28,7 @@ func (admin *Admins) ToDomain() admins.Domain {
 		Email:       admin.Email,
 		Address:     admin.Address,
 		CompanyName: admin.CompanyName,
+		JobsCreated: jobs.ListToDomain(admin.JobsCreated),
 		Password:    admin.Password,
 		CreatedAt:   admin.CreatedAt,
 		UpdatedAt:   admin.UpdatedAt,
@@ -46,6 +49,7 @@ func FromDomain(domain admins.Domain) Admins {
 		Email:       domain.Email,
 		Address:     domain.Address,
 		CompanyName: domain.CompanyName,
+		JobsCreated: jobs.ListFromDomain(domain.JobsCreated),
 		Password:    domain.Password,
 		CreatedAt:   domain.CreatedAt,
 		UpdatedAt:   domain.UpdatedAt,

@@ -38,7 +38,7 @@ func (rep *MysqlAdminRepository) Login(ctx context.Context, email string, passwo
 
 func (rep *MysqlAdminRepository) GetAdminById(ctx context.Context, id int) (admins.Domain, error) {
 	var admin Admins
-	result := rep.Conn.First(&admin, "id = ?", id)
+	result := rep.Conn.Preload("Jobs").First(&admin, "id = ?", id)
 
 	if result.Error != nil {
 		return admins.Domain{}, result.Error
@@ -49,7 +49,7 @@ func (rep *MysqlAdminRepository) GetAdminById(ctx context.Context, id int) (admi
 
 func (rep *MysqlAdminRepository) GetAllAdmin(ctx context.Context) ([]admins.Domain, error) {
 	var Admin []Admins
-	result := rep.Conn.Find(&Admin)
+	result := rep.Conn.Preload("JobsCreated").Find(&Admin)
 
 	if result.Error != nil {
 		return []admins.Domain{}, result.Error

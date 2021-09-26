@@ -3,6 +3,8 @@ package admins
 import (
 	"context"
 	"time"
+
+	"main.go/business/jobs"
 )
 
 type Domain struct {
@@ -11,6 +13,7 @@ type Domain struct {
 	Email       string
 	Address     string
 	CompanyName string
+	JobsCreated []jobs.Domain
 	Password    string
 	Token       string
 	CreatedAt   time.Time

@@ -12,6 +12,7 @@ type Jobs struct {
 	Title      string
 	CategoryId int
 	JobDesc    string
+	CreatedBy  int
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 	DeletedAt  gorm.DeletedAt `gorm:"index"`
@@ -23,6 +24,7 @@ func (job *Jobs) ToDomain() jobs.Domain {
 		Title:      job.Title,
 		CategoryId: job.CategoryId,
 		JobDesc:    job.JobDesc,
+		CreatedBy:  job.CreatedBy,
 		CreatedAt:  job.CreatedAt,
 		UpdatedAt:  job.UpdatedAt,
 	}
@@ -41,6 +43,7 @@ func FromDomain(domain jobs.Domain) Jobs {
 		Title:      domain.Title,
 		CategoryId: domain.CategoryId,
 		JobDesc:    domain.JobDesc,
+		CreatedBy:  domain.CreatedBy,
 		CreatedAt:  domain.CreatedAt,
 		UpdatedAt:  domain.UpdatedAt,
 	}

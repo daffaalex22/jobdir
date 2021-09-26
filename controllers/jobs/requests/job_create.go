@@ -8,6 +8,7 @@ type JobCreate struct {
 	Title      string `json:"title"`
 	CategoryId int    `json:"categoryId"`
 	JobDesc    string `json:"jobDesc"`
+	CreatedBy  int    `json:"createdBy"`
 }
 
 func (job *JobCreate) ToDomain() jobs.Domain {
@@ -15,6 +16,7 @@ func (job *JobCreate) ToDomain() jobs.Domain {
 		Title:      job.Title,
 		CategoryId: job.CategoryId,
 		JobDesc:    job.JobDesc,
+		CreatedBy:  job.CreatedBy,
 	}
 }
 

@@ -12,6 +12,7 @@ type JobResponse struct {
 	Title      string    `json:"title"`
 	CategoryId int       `json:"categoryId"`
 	JobDesc    string    `json:"jobDesc"`
+	CreatedBy  int       `json:"createdBy"`
 	CreatedAt  time.Time `json:"createdAt"`
 	UpdatedAt  time.Time `json:"updatedAt"`
 }
@@ -22,6 +23,7 @@ func FromDomain(domain jobs.Domain) JobResponse {
 		Title:      domain.Title,
 		CategoryId: domain.CategoryId,
 		JobDesc:    domain.JobDesc,
+		CreatedBy:  domain.CreatedBy,
 		CreatedAt:  domain.CreatedAt,
 		UpdatedAt:  domain.UpdatedAt,
 	}

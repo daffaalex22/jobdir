@@ -10,6 +10,7 @@ type Domain struct {
 	Title      string
 	CategoryId int
 	JobDesc    string
+	CreatedBy  int
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
