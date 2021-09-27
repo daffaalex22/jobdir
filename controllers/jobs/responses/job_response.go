@@ -5,27 +5,32 @@ import (
 
 	"main.go/business/categories"
 	"main.go/business/jobs"
+	"main.go/controllers/applications/responses"
 )
 
 type JobResponse struct {
-	Id         int       `json:"id"`
-	Title      string    `json:"title"`
-	CategoryId int       `json:"categoryId"`
-	JobDesc    string    `json:"jobDesc"`
-	CreatedBy  int       `json:"createdBy"`
-	CreatedAt  time.Time `json:"createdAt"`
-	UpdatedAt  time.Time `json:"updatedAt"`
+	Id           int                             `json:"id"`
+	Title        string                          `json:"title"`
+	CategoryId   int                             `json:"categoryId"`
+	JobDesc      string                          `json:"jobDesc"`
+	CreatedBy    int                             `json:"createdBy"`
+	CompanyId    int                             `json:"companyId"`
+	Applications []responses.ApplicationResponse `json:"applications"`
+	CreatedAt    time.Time                       `json:"createdAt"`
+	UpdatedAt    time.Time                       `json:"updatedAt"`
 }
 
 func FromDomain(domain jobs.Domain) JobResponse {
 	return JobResponse{
-		Id:         domain.Id,
-		Title:      domain.Title,
-		CategoryId: domain.CategoryId,
-		JobDesc:    domain.JobDesc,
-		CreatedBy:  domain.CreatedBy,
-		CreatedAt:  domain.CreatedAt,
-		UpdatedAt:  domain.UpdatedAt,
+		Id:           domain.Id,
+		Title:        domain.Title,
+		CategoryId:   domain.CategoryId,
+		JobDesc:      domain.JobDesc,
+		CreatedBy:    domain.CreatedBy,
+		CompanyId:    domain.CompanyId,
+		Applications: responses.ListFromDomain(domain.Applications),
+		CreatedAt:    domain.CreatedAt,
+		UpdatedAt:    domain.UpdatedAt,
 	}
 }
 

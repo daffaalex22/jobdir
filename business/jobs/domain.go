@@ -3,16 +3,20 @@ package jobs
 import (
 	"context"
 	"time"
+
+	"main.go/business/applications"
 )
 
 type Domain struct {
-	Id         int
-	Title      string
-	CategoryId int
-	JobDesc    string
-	CreatedBy  int
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	Id           int
+	Title        string
+	CategoryId   int
+	JobDesc      string
+	CreatedBy    int
+	CompanyId    int
+	Applications []applications.Domain
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 type CategoryDomain struct {

@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/spf13/viper"
 	"main.go/controllers/admins"
+	"main.go/controllers/applications"
 	"main.go/controllers/categories"
 	"main.go/controllers/companies"
 	"main.go/controllers/jobs"
@@ -12,11 +13,12 @@ import (
 )
 
 type ControllerList struct {
-	UserController     users.UserController
-	AdminController    admins.AdminController
-	JobController      jobs.JobController
-	CategoryController categories.CategoryController
-	CompanyController  companies.CompanyController
+	UserController        users.UserController
+	AdminController       admins.AdminController
+	JobController         jobs.JobController
+	CategoryController    categories.CategoryController
+	CompanyController     companies.CompanyController
+	ApplicationController applications.ApplicationController
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
@@ -56,6 +58,15 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.DELETE("jobs/:jobId", cl.JobController.DeleteJobById)
 	e.GET("jobs/result", cl.JobController.SearchJobs)
 	e.GET("jobs/result", cl.JobController.FilterJobByCategory)
+
+	// APPLICATION
+	e.POST("applications", cl.ApplicationController.CreateApplication)
+	e.DELETE("applications", cl.ApplicationController.DeleteAllApplications)
+	e.GET("applications", cl.ApplicationController.GetAllApplications)
+	// e.GET("applications/:jobId", cl.JobController.GetJobById)
+	// e.DELETE("jobs/:jobId", cl.JobController.DeleteJobById)
+	// e.GET("jobs/result", cl.JobController.SearchJobs)
+	// e.GET("jobs/result", cl.JobController.FilterJobByCategory)
 
 	//CATEGORY
 	e.POST("jobs/categories", cl.CategoryController.CreateCategory)

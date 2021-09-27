@@ -3,17 +3,20 @@ package users
 import (
 	"context"
 	"time"
+
+	"main.go/business/applications"
 )
 
 type Domain struct {
-	Id        int
-	Name      string
-	Email     string
-	Address   string
-	Password  string
-	Token     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Id           int
+	Name         string
+	Email        string
+	Address      string
+	Applications []applications.Domain
+	Password     string
+	Token        string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 type Usecase interface {

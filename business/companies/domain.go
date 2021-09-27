@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"main.go/business/admins"
+	"main.go/business/jobs"
 )
 
 type Domain struct {
@@ -14,6 +15,7 @@ type Domain struct {
 	Description  string
 	IsTopCompany bool
 	Admins       []admins.Domain
+	Jobs         []jobs.Domain
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
