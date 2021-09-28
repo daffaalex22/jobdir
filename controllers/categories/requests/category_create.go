@@ -2,19 +2,14 @@ package requests
 
 import (
 	"main.go/business/categories"
-	"main.go/controllers/jobs/requests"
 )
 
 type CategoryCreate struct {
-	Category string               `json:"category"`
-	Jobs     []requests.JobCreate `json:jobs`
-	// CategoryDescription string `json:"categoryDesc"`
+	Category string `json:"category"`
 }
 
 func (category *CategoryCreate) ToDomain() categories.Domain {
 	return categories.Domain{
 		Category: category.Category,
-		Jobs:     requests.ListToDomain(category.Jobs),
-		// CategoryDescription: category.CategoryDescription,
 	}
 }

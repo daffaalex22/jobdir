@@ -5,70 +5,71 @@ import (
 	"errors"
 	"time"
 
-	"github.com/spf13/viper"
 	"main.go/app/middlewares"
 )
 
 type AdminUsecase struct {
+	ConfigJWT      *middlewares.ConfigJWT
 	Repo           Repository
 	contextTimeout time.Duration
 }
 
-func NewAdminUsecase(repo Repository, timeout time.Duration) Usecase {
+func NewAdminUsecase(repo Repository, timeout time.Duration, configJWT *middlewares.ConfigJWT) Usecase {
 	return &AdminUsecase{
+		ConfigJWT:      configJWT,
 		Repo:           repo,
 		contextTimeout: timeout,
 	}
 }
 
-func (uc *AdminUsecase) Login(ctx context.Context, email string, password string) (Domain, error) {
+func (uc *AdminUsecase) Login(ctx context.Context, domain Domain) (Domain, error) {
 
-	if email == "" {
+	if domain.Email == "" {
 		return Domain{}, errors.New("email empty")
 	}
 
-	if password == "" {
+	if domain.Password == "" {
 		return Domain{}, errors.New("password empty")
 	}
 
-	Admin, err := uc.Repo.Login(ctx, email, password)
+	admin, err := uc.Repo.Login(ctx, domain)
 	if err != nil {
 		return Domain{}, err
 	}
-	JWTConf := middlewares.ConfigJWT{
-		SecretJWT:       viper.GetString(`jwt.secret`),
-		ExpiresDuration: viper.GetInt(`jwt.expired`),
-	}
+	// JWTConf := middlewares.ConfigJWT{
+	// 	SecretJWT:       viper.GetString(`jwt.secret`),
+	// 	ExpiresDuration: viper.GetInt(`jwt.expired`),
+	// }
 
-	Admin.Token, err = JWTConf.GenerateTokenJWT(Admin.Id)
+	admin.Token, err = uc.ConfigJWT.GenerateTokenJWT(admin.Id)
 	if err != nil {
 		return Domain{}, err
 	}
-	return Admin, nil
+	return admin, nil
 }
 
 func (uc *AdminUsecase) GetAdminById(c context.Context, id int) (Domain, error) {
 	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
 	defer cancel()
 
-	Admin, err := uc.Repo.GetAdminById(ctx, id)
+	admin, err := uc.Repo.GetAdminById(ctx, id)
 	if err != nil {
 		return Domain{}, err
 	}
 
-	return Admin, nil
+	return admin, nil
 }
 
 func (uc *AdminUsecase) GetAllAdmin(c context.Context) ([]Domain, error) {
 	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
 	defer cancel()
 
-	Admin, err := uc.Repo.GetAllAdmin(ctx)
+	admin, err := uc.Repo.GetAllAdmin(ctx)
 	if err != nil {
 		return []Domain{}, err
 	}
 
-	return Admin, nil
+	return admin, nil
 }
 
 func (uc *AdminUsecase) UpdateAdmin(c context.Context, domain Domain) (Domain, error) {
@@ -76,24 +77,24 @@ func (uc *AdminUsecase) UpdateAdmin(c context.Context, domain Domain) (Domain, e
 	defer cancel()
 
 	// domain.UpdatedAt = time.Now()
-	Admin, err := uc.Repo.UpdateAdmin(ctx, domain)
+	admin, err := uc.Repo.UpdateAdmin(ctx, domain)
 	if err != nil {
 		return Domain{}, err
 	}
 
-	return Admin, nil
+	return admin, nil
 }
 
 func (uc *AdminUsecase) DeleteAdmin(c context.Context, id int) (Domain, error) {
 	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
 	defer cancel()
 
-	Admin, err := uc.Repo.DeleteAdmin(ctx, id)
+	admin, err := uc.Repo.DeleteAdmin(ctx, id)
 	if err != nil {
 		return Domain{}, err
 	}
 
-	return Admin, nil
+	return admin, nil
 }
 
 func (uc *AdminUsecase) RegisterAdmin(ctx context.Context, domain Domain) (Domain, error) {
@@ -113,4 +114,16 @@ func (uc *AdminUsecase) RegisterAdmin(ctx context.Context, domain Domain) (Domai
 	}
 
 	return Admin, nil
+}
+
+func (uc *AdminUsecase) HardDeleteAllAdmins(c context.Context) error {
+	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
+	defer cancel()
+
+	err := uc.Repo.HardDeleteAllAdmins(ctx)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

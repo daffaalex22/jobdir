@@ -28,13 +28,13 @@ func (UserController UserController) Login(c echo.Context) error {
 	c.Bind(&userLogin)
 
 	ctx := c.Request().Context()
-	user, error := UserController.UserUseCase.Login(ctx, userLogin.Email, userLogin.Password)
+	user, error := UserController.UserUseCase.Login(ctx, userLogin.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.FromDomain(user))
+	return controllers.NewSuccessResponse(c, responses.FromDomainLogin(user))
 }
 
 func (UserController UserController) GetUserById(c echo.Context) error {

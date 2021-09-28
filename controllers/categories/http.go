@@ -46,8 +46,6 @@ func (CategoryController CategoryController) GetAllCategory(c echo.Context) erro
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	// res, err := jobs.JobUsecase.FillJobs(ctx, responses.ToListJobsCategoryDomain(category))
-
 	return controllers.NewSuccessResponse(c, responses.ListFromDomain(category))
 }
 
