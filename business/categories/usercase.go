@@ -57,19 +57,6 @@ func (uc *CategoryUsecase) GetAllCategory(c context.Context) ([]Domain, error) {
 	return category, nil
 }
 
-// func (uc *CategoryUsecase) UpdateCategory(c context.Context, domain Domain) (Domain, error) {
-// 	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
-// 	defer cancel()
-
-// 	// domain.UpdatedAt = time.Now()
-// 	category, err := uc.Repo.UpdateCategory(ctx, domain)
-// 	if err != nil {
-// 		return Domain{}, err
-// 	}
-
-// 	return category, nil
-// }
-
 func (uc *CategoryUsecase) DeleteCategoryById(c context.Context, id int) (Domain, error) {
 	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
 	defer cancel()

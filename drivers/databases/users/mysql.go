@@ -5,6 +5,7 @@ import (
 
 	"gorm.io/gorm"
 	"main.go/business/users"
+	"main.go/helpers/encrypt"
 )
 
 type MysqlUserRepository struct {
@@ -17,11 +18,18 @@ func NewMysqlUserRepository(conn *gorm.DB) users.Repository {
 	}
 }
 
-func (rep *MysqlUserRepository) Login(ctx context.Context, email string, password string) (users.Domain, error) {
+func (rep *MysqlUserRepository) Login(ctx context.Context, domain users.Domain) (users.Domain, error) {
 	var user Users
-	result := rep.Conn.First(&user, "email = ? AND password = ?", email, password)
+
+	result := rep.Conn.Preload("Applications").First(&user, "email = ?", domain.Email)
 
 	if result.Error != nil {
+		return users.Domain{}, result.Error
+	}
+
+	err := encrypt.CheckPassword(domain.Password, user.Password)
+
+	if err != nil {
 		return users.Domain{}, result.Error
 	}
 
@@ -30,7 +38,7 @@ func (rep *MysqlUserRepository) Login(ctx context.Context, email string, passwor
 
 func (rep *MysqlUserRepository) GetUserById(ctx context.Context, id int) (users.Domain, error) {
 	var user Users
-	result := rep.Conn.First(&user, "id = ?", id)
+	result := rep.Conn.Preload("Applications").First(&user, "id = ?", id)
 
 	if result.Error != nil {
 		return users.Domain{}, result.Error
@@ -41,7 +49,7 @@ func (rep *MysqlUserRepository) GetUserById(ctx context.Context, id int) (users.
 
 func (rep *MysqlUserRepository) GetAllUser(ctx context.Context) ([]users.Domain, error) {
 	var user []Users
-	result := rep.Conn.Find(&user)
+	result := rep.Conn.Preload("Applications").Find(&user)
 
 	if result.Error != nil {
 		return []users.Domain{}, result.Error
@@ -52,19 +60,14 @@ func (rep *MysqlUserRepository) GetAllUser(ctx context.Context) ([]users.Domain,
 
 func (rep *MysqlUserRepository) UpdateUser(ctx context.Context, domain users.Domain) (users.Domain, error) {
 	var user Users
-	result := rep.Conn.First(&user, "email = ? AND password = ?", domain.Email, domain.Password)
+
+	result := rep.Conn.Preload("Applications").First(&user, "email = ? AND password = ?", domain.Email, domain.Password)
 
 	if result.Error != nil {
 		return users.Domain{}, result.Error
 	}
 
 	result = rep.Conn.Model(&user).Updates(FromDomain(domain))
-	// Users{
-	// 	Email:    domain.Email,
-	// 	Password: domain.Password,
-	// 	Name:     domain.Name,
-	// 	Address:  domain.Address,
-	// })
 
 	if result.Error != nil {
 		return users.Domain{}, result.Error
@@ -91,14 +94,14 @@ func (rep *MysqlUserRepository) DeleteUser(ctx context.Context, id int) (users.D
 }
 
 func (rep *MysqlUserRepository) RegisterUser(ctx context.Context, domain users.Domain) (users.Domain, error) {
-	// user := Users{
-	// 	Email:    domain.Email,
-	// 	Password: domain.Password,
-	// 	Name:     domain.Name,
-	// 	Address:  domain.Address,
-	// }
-
 	user := FromDomain(domain)
+
+	hashedPassword, err := encrypt.Hash(domain.Password)
+	if err != nil {
+		return users.Domain{}, err
+	}
+
+	user.Password = hashedPassword
 
 	result := rep.Conn.Create(&user)
 

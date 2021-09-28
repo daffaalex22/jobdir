@@ -22,18 +22,6 @@ func NewJobController(JobUseCase jobs.Usecase) *JobController {
 	}
 }
 
-// func (JobController JobController) FillJobs(c echo.Context, category []jobs.CategoryDomain) error {
-
-// 	ctx := c.Request().Context()
-// 	res, err := JobController.JobUseCase.FillJobs(ctx, category)
-
-// 	if err != nil {
-// 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
-// 	}
-
-// 	return controllers.NewSuccessResponse(c, responses.ToListCategoryDomain(res))
-// }
-
 func (JobController JobController) CreateJob(c echo.Context) error {
 	fmt.Println("CreateJob")
 	jobCreate := requests.JobCreate{}
