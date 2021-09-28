@@ -17,27 +17,9 @@ func NewMysqlCompanyRepository(conn *gorm.DB) companies.Repository {
 	}
 }
 
-// func (rep *MysqlCompanyRepository) Login(ctx context.Context, email string, password string) (companies.Domain, error) {
-// 	var Company Companies
-
-// 	result := rep.Conn.First(&Company, "email = ?", email)
-
-// 	if result.Error != nil {
-// 		return companies.Domain{}, result.Error
-// 	}
-
-// 	err := encrypt.CheckPassword(password, Company.Password)
-
-// 	if err != nil {
-// 		return companies.Domain{}, result.Error
-// 	}
-
-// 	return Company.ToDomain(), nil
-// }
-
 func (rep *MysqlCompanyRepository) GetCompanyById(ctx context.Context, id int) (companies.Domain, error) {
 	var Company Companies
-	result := rep.Conn.First(&Company, "id = ?", id)
+	result := rep.Conn.Preload("Admins.JobsCreated").Preload("Jobs.Category").Preload("Jobs.Applications").First(&Company, "id = ?", id)
 
 	if result.Error != nil {
 		return companies.Domain{}, result.Error
@@ -49,7 +31,7 @@ func (rep *MysqlCompanyRepository) GetCompanyById(ctx context.Context, id int) (
 func (rep *MysqlCompanyRepository) GetAllCompany(ctx context.Context) ([]companies.Domain, error) {
 	var Company []Companies
 
-	result := rep.Conn.Preload("Admins.JobsCreated").Preload("Jobs.Category").Find(&Company)
+	result := rep.Conn.Preload("Admins.JobsCreated").Preload("Jobs.Category").Preload("Jobs.Applications").Find(&Company)
 	if result.Error != nil {
 		return []companies.Domain{}, result.Error
 	}

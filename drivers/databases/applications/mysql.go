@@ -17,19 +17,6 @@ func NewMysqlApplicationRepository(conn *gorm.DB) applications.Repository {
 	}
 }
 
-// func (rep *MysqlApplicationRepository) FillApplications(ctx context.Context, categories []applications.CategoryDomain) ([]Applications.CategoryDomain, error) {
-
-// 	for _, category := range categories {
-// 		var Application []Applications
-// 		result := rep.Conn.Where("categoryId = ?", category.Id).Find(&Application)
-// 		if result.Error != nil {
-// 			return categories, result.Error
-// 		}
-// 		category.Applications = append(category.Applications, ListToDomain(Application)...)
-// 	}
-// 	return categories, nil
-// }
-
 func (rep *MysqlApplicationRepository) CreateApplication(ctx context.Context, domain applications.Domain) (applications.Domain, error) {
 	application := FromDomain(domain)
 
@@ -53,17 +40,6 @@ func (rep *MysqlApplicationRepository) GetAllApplications(ctx context.Context) (
 	return ListToDomain(Application), nil
 }
 
-// func (rep *MysqlApplicationRepository) GetApplicationById(ctx context.Context, id int) (applications.Domain, error) {
-// 	var Application Applications
-// 	result := rep.Conn.First(&Application, "id = ?", id)
-
-// 	if result.Error != nil {
-// 		return applications.Domain{}, result.Error
-// 	}
-
-// 	return Application.ToDomain(), nil
-// }
-
 func (rep *MysqlApplicationRepository) DeleteAllApplications(ctx context.Context) error {
 	var Applications []Applications
 
@@ -81,17 +57,6 @@ func (rep *MysqlApplicationRepository) DeleteAllApplications(ctx context.Context
 	return nil
 }
 
-// func (rep *MysqlApplicationRepository) DeleteApplicationById(ctx context.Context, id int) (applications.Domain, error) {
-// 	var Application Applications
-// 	result := rep.Conn.Where("id = ?", id).Delete(&Application)
-
-// 	if result.Error != nil {
-// 		return applications.Domain{}, result.Error
-// 	}
-
-// 	return Application.ToDomain(), nil
-// }
-
 // func (rep *MysqlApplicationRepository) SearchApplications(ctx context.Context, title string) ([]applications.Domain, error) {
 // 	var Application []Applications
 // 	result := rep.Conn.Where("title LIKE ?", title+"%").Find(&Application)
@@ -105,16 +70,6 @@ func (rep *MysqlApplicationRepository) DeleteAllApplications(ctx context.Context
 // 	}
 
 // 	result = rep.Conn.Where("title LIKE ?", "%"+title+"%").Find(&Application)
-// 	if result.Error != nil {
-// 		return []applications.Domain{}, result.Error
-// 	}
-
-// 	return ListToDomain(Application), nil
-// }
-
-// func (rep *MysqlApplicationRepository) FilterApplicationByCategory(ctx context.Context, categoryId int) ([]applications.Domain, error) {
-// 	var Application []Applications
-// 	result := rep.Conn.Where("category_id = ?", categoryId).Find(&Application)
 // 	if result.Error != nil {
 // 		return []applications.Domain{}, result.Error
 // 	}

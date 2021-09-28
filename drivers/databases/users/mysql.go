@@ -38,7 +38,7 @@ func (rep *MysqlUserRepository) Login(ctx context.Context, domain users.Domain) 
 
 func (rep *MysqlUserRepository) GetUserById(ctx context.Context, id int) (users.Domain, error) {
 	var user Users
-	result := rep.Conn.First(&user, "id = ?", id)
+	result := rep.Conn.Preload("Applications").First(&user, "id = ?", id)
 
 	if result.Error != nil {
 		return users.Domain{}, result.Error
@@ -61,7 +61,7 @@ func (rep *MysqlUserRepository) GetAllUser(ctx context.Context) ([]users.Domain,
 func (rep *MysqlUserRepository) UpdateUser(ctx context.Context, domain users.Domain) (users.Domain, error) {
 	var user Users
 
-	result := rep.Conn.First(&user, "email = ? AND password = ?", domain.Email, domain.Password)
+	result := rep.Conn.Preload("Applications").First(&user, "email = ? AND password = ?", domain.Email, domain.Password)
 
 	if result.Error != nil {
 		return users.Domain{}, result.Error

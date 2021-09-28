@@ -55,7 +55,7 @@ func (rep *MysqlJobRepository) GetAllJobs(ctx context.Context) ([]jobs.Domain, e
 
 func (rep *MysqlJobRepository) GetJobById(ctx context.Context, id int) (jobs.Domain, error) {
 	var job Jobs
-	result := rep.Conn.First(&job, "id = ?", id)
+	result := rep.Conn.Preload("Applications").Preload("Category").First(&job, "id = ?", id)
 
 	if result.Error != nil {
 		return jobs.Domain{}, result.Error
@@ -94,17 +94,17 @@ func (rep *MysqlJobRepository) DeleteJobById(ctx context.Context, id int) (jobs.
 
 func (rep *MysqlJobRepository) SearchJobs(ctx context.Context, title string) ([]jobs.Domain, error) {
 	var job []Jobs
-	result := rep.Conn.Where("title LIKE ?", title+"%").Find(&job)
+	result := rep.Conn.Preload("Applications").Preload("Category").Where("title LIKE ?", title+"%").Find(&job)
 	if result.Error != nil {
 		return []jobs.Domain{}, result.Error
 	}
 
-	result = rep.Conn.Where("title LIKE ?", title+"%").Find(&job)
+	result = rep.Conn.Preload("Applications").Preload("Category").Where("title LIKE ?", title+"%").Find(&job)
 	if result.Error != nil {
 		return []jobs.Domain{}, result.Error
 	}
 
-	result = rep.Conn.Where("title LIKE ?", "%"+title+"%").Find(&job)
+	result = rep.Conn.Preload("Applications").Preload("Category").Where("title LIKE ?", "%"+title+"%").Find(&job)
 	if result.Error != nil {
 		return []jobs.Domain{}, result.Error
 	}
@@ -114,7 +114,7 @@ func (rep *MysqlJobRepository) SearchJobs(ctx context.Context, title string) ([]
 
 func (rep *MysqlJobRepository) FilterJobByCategory(ctx context.Context, categoryId int) ([]jobs.Domain, error) {
 	var job []Jobs
-	result := rep.Conn.Where("category_id = ?", categoryId).Find(&job)
+	result := rep.Conn.Preload("Applications").Preload("Category").Where("category_id = ?", categoryId).Find(&job)
 	if result.Error != nil {
 		return []jobs.Domain{}, result.Error
 	}

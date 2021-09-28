@@ -21,7 +21,7 @@ func NewMysqlAdminRepository(conn *gorm.DB) admins.Repository {
 func (rep *MysqlAdminRepository) Login(ctx context.Context, domain admins.Domain) (admins.Domain, error) {
 	var admin Admins
 
-	result := rep.Conn.Preload("JobsCreated.Category").First(&admin, "email = ?", domain.Email)
+	result := rep.Conn.Preload("JobsCreated.Category").Preload("JobsCreated.Applications").First(&admin, "email = ?", domain.Email)
 
 	if result.Error != nil {
 		return admins.Domain{}, result.Error
@@ -38,7 +38,7 @@ func (rep *MysqlAdminRepository) Login(ctx context.Context, domain admins.Domain
 
 func (rep *MysqlAdminRepository) GetAdminById(ctx context.Context, id int) (admins.Domain, error) {
 	var admin Admins
-	result := rep.Conn.Preload("JobsCreated.Category").First(&admin, "id = ?", id)
+	result := rep.Conn.Preload("JobsCreated.Category").Preload("JobsCreated.Applications").First(&admin, "id = ?", id)
 
 	if result.Error != nil {
 		return admins.Domain{}, result.Error
@@ -49,7 +49,7 @@ func (rep *MysqlAdminRepository) GetAdminById(ctx context.Context, id int) (admi
 
 func (rep *MysqlAdminRepository) GetAllAdmin(ctx context.Context) ([]admins.Domain, error) {
 	var Admin []Admins
-	result := rep.Conn.Preload("JobsCreated.Category").Find(&Admin)
+	result := rep.Conn.Preload("JobsCreated.Category").Preload("JobsCreated.Applications").Find(&Admin)
 
 	if result.Error != nil {
 		return []admins.Domain{}, result.Error
@@ -61,7 +61,7 @@ func (rep *MysqlAdminRepository) GetAllAdmin(ctx context.Context) ([]admins.Doma
 func (rep *MysqlAdminRepository) UpdateAdmin(ctx context.Context, domain admins.Domain) (admins.Domain, error) {
 	var Admin Admins
 
-	result := rep.Conn.Preload("JobsCreated.Category").First(&Admin, "email = ? AND password = ?", domain.Email, domain.Password)
+	result := rep.Conn.Preload("JobsCreated.Category").Preload("JobsCreated.Applications").First(&Admin, "email = ? AND password = ?", domain.Email, domain.Password)
 
 	if result.Error != nil {
 		return admins.Domain{}, result.Error
