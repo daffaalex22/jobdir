@@ -18,16 +18,16 @@ func NewMysqlUserRepository(conn *gorm.DB) users.Repository {
 	}
 }
 
-func (rep *MysqlUserRepository) Login(ctx context.Context, email string, password string) (users.Domain, error) {
+func (rep *MysqlUserRepository) Login(ctx context.Context, domain users.Domain) (users.Domain, error) {
 	var user Users
 
-	result := rep.Conn.First(&user, "email = ?", email)
+	result := rep.Conn.Preload("Applications").First(&user, "email = ?", domain.Email)
 
 	if result.Error != nil {
 		return users.Domain{}, result.Error
 	}
 
-	err := encrypt.CheckPassword(password, user.Password)
+	err := encrypt.CheckPassword(domain.Password, user.Password)
 
 	if err != nil {
 		return users.Domain{}, result.Error
@@ -49,7 +49,7 @@ func (rep *MysqlUserRepository) GetUserById(ctx context.Context, id int) (users.
 
 func (rep *MysqlUserRepository) GetAllUser(ctx context.Context) ([]users.Domain, error) {
 	var user []Users
-	result := rep.Conn.Find(&user)
+	result := rep.Conn.Preload("Applications").Find(&user)
 
 	if result.Error != nil {
 		return []users.Domain{}, result.Error

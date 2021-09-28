@@ -12,7 +12,7 @@ type Domain struct {
 	Name        string
 	Email       string
 	Address     string
-	CompanyName string
+	CompanyId   int
 	JobsCreated []jobs.Domain
 	Password    string
 	Token       string

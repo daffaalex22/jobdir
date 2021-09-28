@@ -21,17 +21,17 @@ func NewUserUsecase(repo Repository, timeout time.Duration) Usecase {
 	}
 }
 
-func (uc *UserUsecase) Login(ctx context.Context, email string, password string) (Domain, error) {
+func (uc *UserUsecase) Login(ctx context.Context, domain Domain) (Domain, error) {
 
-	if email == "" {
+	if domain.Email == "" {
 		return Domain{}, errors.New("email empty")
 	}
 
-	if password == "" {
+	if domain.Password == "" {
 		return Domain{}, errors.New("password empty")
 	}
 
-	user, err := uc.Repo.Login(ctx, email, password)
+	user, err := uc.Repo.Login(ctx, domain)
 	if err != nil {
 		return Domain{}, err
 	}

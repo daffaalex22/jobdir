@@ -14,7 +14,7 @@ type Companies struct {
 	Name         string `gorm:"unique"`
 	Address      string
 	Description  string
-	Admins       []admins.Admins `gorm:"foreignKey:CompanyName;references:Name"`
+	Admins       []admins.Admins `gorm:"foreignKey:CompanyId"`
 	IsTopCompany bool
 	Jobs         []jobs.Jobs `gorm:"foreignKey:CompanyId"`
 	CreatedAt    time.Time

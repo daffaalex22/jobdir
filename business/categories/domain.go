@@ -3,15 +3,13 @@ package categories
 import (
 	"context"
 	"time"
-
-	"main.go/business/jobs"
 )
 
 type Domain struct {
 	Id       int
 	Category string
 	// CategoryDescription string
-	Jobs      []jobs.Domain
+	// Jobs      []jobs.Domain
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

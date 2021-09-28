@@ -12,7 +12,7 @@ type AdminResponse struct {
 	Name        string                  `json:"name"`
 	Email       string                  `json:"email"`
 	Address     string                  `json:"address"`
-	CompanyName string                  `json:"companyName"`
+	CompanyId   int                     `json:"companyId"`
 	JobsCreated []responses.JobResponse `json:"jobsCreated"`
 	Token       string                  `json:"token"`
 	CreatedAt   time.Time               `json:"createdAt"`
@@ -25,7 +25,7 @@ func FromDomain(domain admins.Domain) AdminResponse {
 		Name:        domain.Name,
 		Email:       domain.Email,
 		Address:     domain.Address,
-		CompanyName: domain.CompanyName,
+		CompanyId:   domain.CompanyId,
 		JobsCreated: responses.ListFromDomain(domain.JobsCreated),
 		Token:       domain.Token,
 		CreatedAt:   domain.CreatedAt,

@@ -18,15 +18,15 @@ func NewJobUsecase(repo Repository, timeout time.Duration) Usecase {
 	}
 }
 
-func (uc *JobUsecase) FillJobs(ctx context.Context, categories []CategoryDomain) ([]CategoryDomain, error) {
+// func (uc *JobUsecase) FillJobs(ctx context.Context, categories []CategoryDomain) ([]CategoryDomain, error) {
 
-	res, err := uc.Repo.FillJobs(ctx, categories)
-	if err != nil {
-		return categories, err
-	}
+// 	res, err := uc.Repo.FillJobs(ctx, categories)
+// 	if err != nil {
+// 		return categories, err
+// 	}
 
-	return res, nil
-}
+// 	return res, nil
+// }
 
 func (uc *JobUsecase) CreateJob(ctx context.Context, domain Domain) (Domain, error) {
 

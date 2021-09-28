@@ -6,12 +6,14 @@ import (
 	"gorm.io/gorm"
 	"main.go/business/jobs"
 	"main.go/drivers/databases/applications"
+	"main.go/drivers/databases/categories"
 )
 
 type Jobs struct {
 	Id           int `gorm:"primaryKey"`
 	Title        string
 	CategoryId   int
+	Category     categories.Categories `gorm:"foreignKey:CategoryId"`
 	JobDesc      string
 	CreatedBy    int
 	CompanyId    int
@@ -26,6 +28,7 @@ func (job *Jobs) ToDomain() jobs.Domain {
 		Id:           job.Id,
 		Title:        job.Title,
 		CategoryId:   job.CategoryId,
+		Category:     job.Category.ToDomain(),
 		JobDesc:      job.JobDesc,
 		CreatedBy:    job.CreatedBy,
 		CompanyId:    job.CompanyId,
@@ -47,6 +50,7 @@ func FromDomain(domain jobs.Domain) Jobs {
 		Id:           domain.Id,
 		Title:        domain.Title,
 		CategoryId:   domain.CategoryId,
+		Category:     categories.FromDomain(domain.Category),
 		JobDesc:      domain.JobDesc,
 		CreatedBy:    domain.CreatedBy,
 		CompanyId:    domain.CompanyId,

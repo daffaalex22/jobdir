@@ -14,7 +14,7 @@ type Admins struct {
 	Email       string `gorm:"unique"`
 	Address     string
 	Password    string
-	CompanyName string
+	CompanyId   int
 	JobsCreated []jobs.Jobs `gorm:"foreignKey:CreatedBy;references:Id"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
@@ -27,7 +27,7 @@ func (admin *Admins) ToDomain() admins.Domain {
 		Name:        admin.Name,
 		Email:       admin.Email,
 		Address:     admin.Address,
-		CompanyName: admin.CompanyName,
+		CompanyId:   admin.CompanyId,
 		JobsCreated: jobs.ListToDomain(admin.JobsCreated),
 		Password:    admin.Password,
 		CreatedAt:   admin.CreatedAt,
@@ -48,7 +48,7 @@ func FromDomain(domain admins.Domain) Admins {
 		Name:        domain.Name,
 		Email:       domain.Email,
 		Address:     domain.Address,
-		CompanyName: domain.CompanyName,
+		CompanyId:   domain.CompanyId,
 		JobsCreated: jobs.ListFromDomain(domain.JobsCreated),
 		Password:    domain.Password,
 		CreatedAt:   domain.CreatedAt,

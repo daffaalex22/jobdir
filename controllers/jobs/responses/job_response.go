@@ -3,21 +3,22 @@ package responses
 import (
 	"time"
 
-	"main.go/business/categories"
 	"main.go/business/jobs"
-	"main.go/controllers/applications/responses"
+	_appResponses "main.go/controllers/applications/responses"
+	_catResponses "main.go/controllers/categories/responses"
 )
 
 type JobResponse struct {
-	Id           int                             `json:"id"`
-	Title        string                          `json:"title"`
-	CategoryId   int                             `json:"categoryId"`
-	JobDesc      string                          `json:"jobDesc"`
-	CreatedBy    int                             `json:"createdBy"`
-	CompanyId    int                             `json:"companyId"`
-	Applications []responses.ApplicationResponse `json:"applications"`
-	CreatedAt    time.Time                       `json:"createdAt"`
-	UpdatedAt    time.Time                       `json:"updatedAt"`
+	Id           int                                 `json:"id"`
+	Title        string                              `json:"title"`
+	CategoryId   int                                 `json:"categoryId"`
+	Category     _catResponses.CategoryResponse      `json:"category"`
+	JobDesc      string                              `json:"jobDesc"`
+	CreatedBy    int                                 `json:"createdBy"`
+	CompanyId    int                                 `json:"companyId"`
+	Applications []_appResponses.ApplicationResponse `json:"applications"`
+	CreatedAt    time.Time                           `json:"createdAt"`
+	UpdatedAt    time.Time                           `json:"updatedAt"`
 }
 
 func FromDomain(domain jobs.Domain) JobResponse {
@@ -25,10 +26,11 @@ func FromDomain(domain jobs.Domain) JobResponse {
 		Id:           domain.Id,
 		Title:        domain.Title,
 		CategoryId:   domain.CategoryId,
+		Category:     _catResponses.FromDomain(domain.Category),
 		JobDesc:      domain.JobDesc,
 		CreatedBy:    domain.CreatedBy,
 		CompanyId:    domain.CompanyId,
-		Applications: responses.ListFromDomain(domain.Applications),
+		Applications: _appResponses.ListFromDomain(domain.Applications),
 		CreatedAt:    domain.CreatedAt,
 		UpdatedAt:    domain.UpdatedAt,
 	}
@@ -41,20 +43,20 @@ func ListFromDomain(domain []jobs.Domain) (response []JobResponse) {
 	return
 }
 
-func ToCategoryDomain(input jobs.CategoryDomain) categories.Domain {
-	var category categories.Domain
-	category.Id = input.Id
-	category.Category = input.Category
-	category.Jobs = input.Jobs
-	category.CreatedAt = input.CreatedAt
-	category.UpdatedAt = input.UpdatedAt
+// func ToCategoryDomain(input jobs.CategoryDomain) categories.Domain {
+// 	var category categories.Domain
+// 	category.Id = input.Id
+// 	category.Category = input.Category
+// 	category.Jobs = input.Jobs
+// 	category.CreatedAt = input.CreatedAt
+// 	category.UpdatedAt = input.UpdatedAt
 
-	return category
-}
+// 	return category
+// }
 
-func ToListCategoryDomain(categories []jobs.CategoryDomain) (domain []categories.Domain) {
-	for _, category := range categories {
-		domain = append(domain, ToCategoryDomain(category))
-	}
-	return
-}
+// func ToListCategoryDomain(categories []jobs.CategoryDomain) (domain []categories.Domain) {
+// 	for _, category := range categories {
+// 		domain = append(domain, ToCategoryDomain(category))
+// 	}
+// 	return
+// }
