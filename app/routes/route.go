@@ -27,7 +27,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	// USER
-	e.POST("users/login", cl.UserController.Login, jwt)
+	e.POST("users/login", cl.UserController.Login)
 	e.POST("users/register", cl.UserController.RegisterUser)
 	e.GET("users/:userId", cl.UserController.GetUserById, jwt)
 	e.GET("users", cl.UserController.GetAllUser, jwt)
