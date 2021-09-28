@@ -28,13 +28,13 @@ func (AdminController AdminController) Login(c echo.Context) error {
 	c.Bind(&AdminLogin)
 
 	ctx := c.Request().Context()
-	Admin, error := AdminController.AdminUseCase.Login(ctx, AdminLogin.Email, AdminLogin.Password)
+	Admin, error := AdminController.AdminUseCase.Login(ctx, AdminLogin.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.FromDomain(Admin))
+	return controllers.NewSuccessResponse(c, responses.FromDomainLogin(Admin))
 }
 
 func (AdminController AdminController) GetAdminById(c echo.Context) error {

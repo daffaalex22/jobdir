@@ -19,6 +19,7 @@ type ControllerList struct {
 	CategoryController    categories.CategoryController
 	CompanyController     companies.CompanyController
 	ApplicationController applications.ApplicationController
+	JwtConfig             middleware.JWTConfig
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {

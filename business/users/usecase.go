@@ -5,17 +5,18 @@ import (
 	"errors"
 	"time"
 
-	"github.com/spf13/viper"
 	"main.go/app/middlewares"
 )
 
 type UserUsecase struct {
+	ConfigJWT      *middlewares.ConfigJWT
 	Repo           Repository
 	contextTimeout time.Duration
 }
 
-func NewUserUsecase(repo Repository, timeout time.Duration) Usecase {
+func NewUserUsecase(repo Repository, timeout time.Duration, configJWT *middlewares.ConfigJWT) Usecase {
 	return &UserUsecase{
+		ConfigJWT:      configJWT,
 		Repo:           repo,
 		contextTimeout: timeout,
 	}
@@ -35,12 +36,12 @@ func (uc *UserUsecase) Login(ctx context.Context, domain Domain) (Domain, error)
 	if err != nil {
 		return Domain{}, err
 	}
-	JWTConf := middlewares.ConfigJWT{
-		SecretJWT:       viper.GetString(`jwt.secret`),
-		ExpiresDuration: viper.GetInt(`jwt.expired`),
-	}
+	// JWTConf := middlewares.ConfigJWT{
+	// 	SecretJWT:       viper.GetString(`jwt.secret`),
+	// 	ExpiresDuration: viper.GetInt(`jwt.expired`),
+	// }
 
-	user.Token, err = JWTConf.GenerateTokenJWT(user.Id)
+	user.Token, err = uc.ConfigJWT.GenerateTokenJWT(user.Id)
 	if err != nil {
 		return Domain{}, err
 	}

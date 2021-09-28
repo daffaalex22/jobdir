@@ -42,21 +42,3 @@ func ListFromDomain(domain []jobs.Domain) (response []JobResponse) {
 	}
 	return
 }
-
-// func ToCategoryDomain(input jobs.CategoryDomain) categories.Domain {
-// 	var category categories.Domain
-// 	category.Id = input.Id
-// 	category.Category = input.Category
-// 	category.Jobs = input.Jobs
-// 	category.CreatedAt = input.CreatedAt
-// 	category.UpdatedAt = input.UpdatedAt
-
-// 	return category
-// }
-
-// func ToListCategoryDomain(categories []jobs.CategoryDomain) (domain []categories.Domain) {
-// 	for _, category := range categories {
-// 		domain = append(domain, ToCategoryDomain(category))
-// 	}
-// 	return
-// }

@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
+	"main.go/app/middlewares"
 	"main.go/app/routes"
 	_adminUsecase "main.go/business/admins"
 	_applicationUsecase "main.go/business/applications"
@@ -58,6 +59,11 @@ func main() {
 		DB_Database: viper.GetString(`database.name`),
 	}
 
+	configJWT := middlewares.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
+
 	Conn := configDB.InitialDB()
 	DbMigrate(Conn)
 
@@ -66,7 +72,7 @@ func main() {
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	userRepository := _userdb.NewMysqlUserRepository(Conn)
-	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext)
+	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext, &configJWT)
 	userController := _userController.NewUserController(userUseCase)
 
 	jobRepository := _jobdb.NewMysqlJobRepository(Conn)
@@ -78,7 +84,7 @@ func main() {
 	categoryController := _categoryController.NewCategoryController(categoryUseCase)
 
 	adminRepository := _admindb.NewMysqlAdminRepository(Conn)
-	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext)
+	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext, &configJWT)
 	adminController := _adminController.NewAdminController(adminUseCase)
 
 	companyRepository := _companydb.NewMysqlCompanyRepository(Conn)
@@ -90,6 +96,7 @@ func main() {
 	applicationController := _applicationController.NewApplicationController(applicationUseCase)
 
 	routesInit := routes.ControllerList{
+		JwtConfig:             configJWT.Init(),
 		UserController:        *userController,
 		JobController:         *jobController,
 		CategoryController:    *categoryController,

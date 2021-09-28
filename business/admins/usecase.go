@@ -5,42 +5,43 @@ import (
 	"errors"
 	"time"
 
-	"github.com/spf13/viper"
 	"main.go/app/middlewares"
 )
 
 type AdminUsecase struct {
+	ConfigJWT      *middlewares.ConfigJWT
 	Repo           Repository
 	contextTimeout time.Duration
 }
 
-func NewAdminUsecase(repo Repository, timeout time.Duration) Usecase {
+func NewAdminUsecase(repo Repository, timeout time.Duration, configJWT *middlewares.ConfigJWT) Usecase {
 	return &AdminUsecase{
+		ConfigJWT:      configJWT,
 		Repo:           repo,
 		contextTimeout: timeout,
 	}
 }
 
-func (uc *AdminUsecase) Login(ctx context.Context, email string, password string) (Domain, error) {
+func (uc *AdminUsecase) Login(ctx context.Context, domain Domain) (Domain, error) {
 
-	if email == "" {
+	if domain.Email == "" {
 		return Domain{}, errors.New("email empty")
 	}
 
-	if password == "" {
+	if domain.Password == "" {
 		return Domain{}, errors.New("password empty")
 	}
 
-	admin, err := uc.Repo.Login(ctx, email, password)
+	admin, err := uc.Repo.Login(ctx, domain)
 	if err != nil {
 		return Domain{}, err
 	}
-	JWTConf := middlewares.ConfigJWT{
-		SecretJWT:       viper.GetString(`jwt.secret`),
-		ExpiresDuration: viper.GetInt(`jwt.expired`),
-	}
+	// JWTConf := middlewares.ConfigJWT{
+	// 	SecretJWT:       viper.GetString(`jwt.secret`),
+	// 	ExpiresDuration: viper.GetInt(`jwt.expired`),
+	// }
 
-	admin.Token, err = JWTConf.GenerateTokenJWT(admin.Id)
+	admin.Token, err = uc.ConfigJWT.GenerateTokenJWT(admin.Id)
 	if err != nil {
 		return Domain{}, err
 	}

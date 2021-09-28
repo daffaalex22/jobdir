@@ -49,7 +49,7 @@ func (rep *MysqlCompanyRepository) GetCompanyById(ctx context.Context, id int) (
 func (rep *MysqlCompanyRepository) GetAllCompany(ctx context.Context) ([]companies.Domain, error) {
 	var Company []Companies
 
-	result := rep.Conn.Preload("Admins").Preload("Jobs").Find(&Company)
+	result := rep.Conn.Preload("Admins.JobsCreated").Preload("Jobs.Category").Find(&Company)
 	if result.Error != nil {
 		return []companies.Domain{}, result.Error
 	}

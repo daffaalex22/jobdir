@@ -21,7 +21,7 @@ type Domain struct {
 }
 
 type Usecase interface {
-	Login(ctx context.Context, email string, password string) (Domain, error)
+	Login(ctx context.Context, domain Domain) (Domain, error)
 	RegisterAdmin(ctx context.Context, domain Domain) (Domain, error)
 	GetAdminById(ctx context.Context, id int) (Domain, error)
 	GetAllAdmin(ctx context.Context) ([]Domain, error)
@@ -31,7 +31,7 @@ type Usecase interface {
 }
 
 type Repository interface {
-	Login(ctx context.Context, email string, password string) (Domain, error)
+	Login(ctx context.Context, domain Domain) (Domain, error)
 	RegisterAdmin(ctx context.Context, domain Domain) (Domain, error)
 	GetAdminById(ctx context.Context, id int) (Domain, error)
 	GetAllAdmin(ctx context.Context) ([]Domain, error)
