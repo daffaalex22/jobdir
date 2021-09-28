@@ -25,6 +25,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	jwt := middleware.JWTWithConfig(cl.JwtConfig)
 	e.Pre(middleware.RemoveTrailingSlash())
+	e.Use(middleware.Logger())
 
 	// USER
 	e.POST("users/login", cl.UserController.Login)
