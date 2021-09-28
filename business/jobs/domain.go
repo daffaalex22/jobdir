@@ -9,13 +9,14 @@ import (
 )
 
 type Domain struct {
-	Id           int
-	Title        string
-	CategoryId   int
-	Category     categories.Domain
-	JobDesc      string
-	CreatedBy    int
-	CompanyId    int
+	Id         int
+	Title      string
+	CategoryId int
+	Category   categories.Domain
+	JobDesc    string
+	CreatedBy  int
+	CompanyId  int
+	// Company      companies.Domain
 	Applications []applications.Domain
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
