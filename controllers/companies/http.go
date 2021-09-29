@@ -63,7 +63,7 @@ func (CompanyController CompanyController) GetAllCompany(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.ListFromDomain(Company))
+	return controllers.NewSuccessResponse(c, responses.ListFromDomainAll(Company))
 }
 
 func (CompanyController CompanyController) UpdateCompany(c echo.Context) error {
