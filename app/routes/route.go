@@ -45,10 +45,10 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	// COMPANY
 	e.POST("companies/register", cl.CompanyController.RegisterCompany)
-	e.GET("companies/:companyI", cl.CompanyController.GetCompanyById)
+	e.GET("companies/:companyId", cl.CompanyController.GetCompanyById)
 	e.GET("companies", cl.CompanyController.GetAllCompany)
 	e.PUT("companies", cl.CompanyController.UpdateCompany)
-	e.DELETE("companies/:companiyId", cl.CompanyController.DeleteCompany)
+	e.DELETE("companies/:companyId", cl.CompanyController.DeleteCompany)
 	e.DELETE("companies", cl.CompanyController.HardDeleteAllCompanies)
 
 	// JOB
