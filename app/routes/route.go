@@ -19,12 +19,12 @@ type ControllerList struct {
 	CompanyController     companies.CompanyController
 	ApplicationController applications.ApplicationController
 	JwtConfig             middleware.JWTConfig
+	// LoggerConfig          middleware.LoggerConfig
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	jwt := middleware.JWTWithConfig(cl.JwtConfig)
-	e.Pre(middleware.RemoveTrailingSlash())
 
 	// USER
 	e.POST("users/login", cl.UserController.Login)
@@ -45,10 +45,10 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	// COMPANY
 	e.POST("companies/register", cl.CompanyController.RegisterCompany)
-	e.GET("companies/:companyI", cl.CompanyController.GetCompanyById)
+	e.GET("companies/:companyId", cl.CompanyController.GetCompanyById)
 	e.GET("companies", cl.CompanyController.GetAllCompany)
 	e.PUT("companies", cl.CompanyController.UpdateCompany)
-	e.DELETE("companies/:companiyId", cl.CompanyController.DeleteCompany)
+	e.DELETE("companies/:companyId", cl.CompanyController.DeleteCompany)
 	e.DELETE("companies", cl.CompanyController.HardDeleteAllCompanies)
 
 	// JOB

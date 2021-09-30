@@ -17,19 +17,6 @@ func NewMysqlJobRepository(conn *gorm.DB) jobs.Repository {
 	}
 }
 
-// func (rep *MysqlJobRepository) FillJobs(ctx context.Context, categories []jobs.CategoryDomain) ([]jobs.CategoryDomain, error) {
-
-// 	for _, category := range categories {
-// 		var job []Jobs
-// 		result := rep.Conn.Where("categoryId = ?", category.Id).Find(&job)
-// 		if result.Error != nil {
-// 			return categories, result.Error
-// 		}
-// 		category.Jobs = append(category.Jobs, ListToDomain(job)...)
-// 	}
-// 	return categories, nil
-// }
-
 func (rep *MysqlJobRepository) CreateJob(ctx context.Context, domain jobs.Domain) (jobs.Domain, error) {
 	job := FromDomain(domain)
 
