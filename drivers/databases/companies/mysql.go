@@ -19,7 +19,7 @@ func NewMysqlCompanyRepository(conn *gorm.DB) companies.Repository {
 
 func (rep *MysqlCompanyRepository) GetCompanyById(ctx context.Context, id int) (companies.Domain, error) {
 	var Company Companies
-	result := rep.Conn.Preload("Admins.JobsCreated").Preload("Jobs.Category").Preload("Jobs.Applications").First(&Company, "id = ?", id)
+	result := rep.Conn.Preload("Admins.JobsCreated.Category").Preload("Jobs.Category").Preload("Jobs.Applications").First(&Company, "id = ?", id)
 
 	if result.Error != nil {
 		return companies.Domain{}, result.Error
@@ -31,7 +31,7 @@ func (rep *MysqlCompanyRepository) GetCompanyById(ctx context.Context, id int) (
 func (rep *MysqlCompanyRepository) GetAllCompany(ctx context.Context) ([]companies.Domain, error) {
 	var Company []Companies
 
-	result := rep.Conn.Preload("Admins.JobsCreated").Preload("Jobs.Category").Preload("Jobs.Applications").Find(&Company)
+	result := rep.Conn.Find(&Company)
 	if result.Error != nil {
 		return []companies.Domain{}, result.Error
 	}
