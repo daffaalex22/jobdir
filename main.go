@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 	"main.go/app/middlewares"
@@ -27,7 +28,9 @@ import (
 	_companydb "main.go/drivers/databases/companies"
 	_jobdb "main.go/drivers/databases/jobs"
 	_userdb "main.go/drivers/databases/users"
+	_mongoDriver "main.go/drivers/mongodb"
 	_mysqlDriver "main.go/drivers/mysql"
+	"main.go/helpers/mongowriter"
 )
 
 func init() {
@@ -59,15 +62,35 @@ func main() {
 		DB_Database: viper.GetString(`database.name`),
 	}
 
+	configMongo := _mongoDriver.ConfigMongo{
+		DB_Host: viper.GetString(`database.host`),
+	}
+
 	configJWT := middlewares.ConfigJWT{
 		SecretJWT:       viper.GetString(`jwt.secret`),
 		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
+
+	// configLogger := middlewares.ConfigLogger{
+	// 	Format: viper.GetString(`logger.format`),
+	// }
+
+	Session := configMongo.InitMongo()
+	mw := &mongowriter.MongoWriter{
+		Session: Session,
 	}
 
 	Conn := configDB.InitialDB()
 	DbMigrate(Conn)
 
 	e := echo.New()
+	e.Pre(middleware.RemoveTrailingSlash())
+	// configLogger.MongoOut(e, mw)
+
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}",
+	}))
+	e.Logger.SetOutput(mw)
 
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
@@ -96,6 +119,7 @@ func main() {
 	applicationController := _applicationController.NewApplicationController(applicationUseCase)
 
 	routesInit := routes.ControllerList{
+		// LoggerConfig:          configLogger.Init(),
 		JwtConfig:             configJWT.Init(),
 		UserController:        *userController,
 		JobController:         *jobController,

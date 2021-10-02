@@ -16,5 +16,8 @@
     "jwt": {
         "secret": "KECOAK#22",
         "expired": 72
+    },
+    "logger": {
+        "format": "method=${method}, uri=${uri}, status=${status}"
     }
 }

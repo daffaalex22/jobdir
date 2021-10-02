@@ -40,13 +40,13 @@ func NewCompanyController(CompanyUseCase companies.Usecase) *CompanyController {
 func (CompanyController CompanyController) GetCompanyById(c echo.Context) error {
 	fmt.Println("GetById")
 
-	CompanyId, err := strconv.Atoi(c.Param("CompanyId"))
+	companyId, err := strconv.Atoi(c.Param("companyId"))
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
 	ctx := c.Request().Context()
-	Company, err := CompanyController.CompanyUseCase.GetCompanyById(ctx, CompanyId)
+	Company, err := CompanyController.CompanyUseCase.GetCompanyById(ctx, companyId)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
@@ -63,7 +63,7 @@ func (CompanyController CompanyController) GetAllCompany(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.ListFromDomain(Company))
+	return controllers.NewSuccessResponse(c, responses.ListFromDomainAll(Company))
 }
 
 func (CompanyController CompanyController) UpdateCompany(c echo.Context) error {
