@@ -1,0 +1,16 @@
+mode: set
+main.go/business/categories/usercase.go:14.73,19.2 1 1
+main.go/business/categories/usercase.go:21.95,23.27 1 1
+main.go/business/categories/usercase.go:27.2,29.16 2 1
+main.go/business/categories/usercase.go:33.2,33.22 1 1
+main.go/business/categories/usercase.go:23.27,25.3 1 1
+main.go/business/categories/usercase.go:29.16,31.3 1 1
+main.go/business/categories/usercase.go:36.87,41.16 4 1
+main.go/business/categories/usercase.go:45.2,45.22 1 1
+main.go/business/categories/usercase.go:41.16,43.3 1 1
+main.go/business/categories/usercase.go:48.80,53.16 4 1
+main.go/business/categories/usercase.go:57.2,57.22 1 1
+main.go/business/categories/usercase.go:53.16,55.3 1 1
+main.go/business/categories/usercase.go:60.90,65.16 4 1
+main.go/business/categories/usercase.go:69.2,69.22 1 1
+main.go/business/categories/usercase.go:65.16,67.3 1 1

@@ -95,7 +95,7 @@ func main() {
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	userRepository := _userdb.NewMysqlUserRepository(Conn)
-	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext, &configJWT)
+	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext /*, &configJWT*/)
 	userController := _userController.NewUserController(userUseCase)
 
 	jobRepository := _jobdb.NewMysqlJobRepository(Conn)
@@ -107,7 +107,7 @@ func main() {
 	categoryController := _categoryController.NewCategoryController(categoryUseCase)
 
 	adminRepository := _admindb.NewMysqlAdminRepository(Conn)
-	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext, &configJWT)
+	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext /*, &configJWT*/)
 	adminController := _adminController.NewAdminController(adminUseCase)
 
 	companyRepository := _companydb.NewMysqlCompanyRepository(Conn)
