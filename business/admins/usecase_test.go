@@ -2,6 +2,7 @@ package admins_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
@@ -36,11 +37,11 @@ func setup() {
 func TestLogin(t *testing.T) {
 
 	setup()
-	adminRepository.On("Login",
-		mock.Anything,
-		mock.AnythingOfType("admins.Domain")).Return(adminDomain, nil).Once()
 
 	t.Run("Test case 1 | Valid Login", func(t *testing.T) {
+		adminRepository.On("Login",
+			mock.Anything,
+			mock.AnythingOfType("admins.Domain")).Return(adminDomain, nil).Once()
 		admin, err := adminService.Login(context.Background(), admins.Domain{
 			Email:    "daaffa@net.usc",
 			Password: "kecoak11",
@@ -50,7 +51,20 @@ func TestLogin(t *testing.T) {
 		assert.Equal(t, "Pabby", admin.Name)
 	})
 
-	t.Run("Test Case 2 | Invalid Email Empty", func(t *testing.T) {
+	t.Run("Test case 2 | Error Login", func(t *testing.T) {
+		adminRepository.On("Login",
+			mock.Anything,
+			mock.AnythingOfType("admins.Domain")).Return(admins.Domain{}, errors.New("Unexpected Error")).Once()
+		admin, err := adminService.Login(context.Background(), admins.Domain{
+			Email:    "daaffa@net.usc",
+			Password: "kecoak11",
+		})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, admin, admins.Domain{})
+	})
+
+	t.Run("Test Case 3 | Invalid Email Empty", func(t *testing.T) {
 
 		_, err := adminService.Login(context.Background(), admins.Domain{
 			Email:    "",
@@ -59,7 +73,7 @@ func TestLogin(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 
-	t.Run("Test Case 3 | Invalid Password Empty", func(t *testing.T) {
+	t.Run("Test Case 4 | Invalid Password Empty", func(t *testing.T) {
 
 		_, err := adminService.Login(context.Background(), admins.Domain{
 			Email:    "daaffa@net.usc",
@@ -82,6 +96,19 @@ func TestGetAdminById(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.NotNil(t, admin)
+
+		adminRepository.AssertExpectations(t)
+	})
+
+	t.Run("Test case 2 | Error", func(t *testing.T) {
+		adminRepository.On("GetAdminById",
+			mock.Anything,
+			mock.AnythingOfType("int")).Return(admins.Domain{}, errors.New("Unexpected Error")).Once()
+
+		admin, err := adminService.GetAdminById(context.Background(), adminDomain.Id)
+
+		assert.Error(t, err)
+		assert.Equal(t, admin, admins.Domain{})
 
 		adminRepository.AssertExpectations(t)
 	})
@@ -115,6 +142,18 @@ func TestGetAllAdmin(t *testing.T) {
 
 		adminRepository.AssertExpectations(t)
 	})
+
+	t.Run("Test case 2 | Error", func(t *testing.T) {
+		adminRepository.On("GetAllAdmin",
+			mock.Anything).Return([]admins.Domain{}, errors.New("Unexpected Error")).Once()
+
+		admin, err := adminService.GetAllAdmin(context.Background())
+
+		assert.Error(t, err)
+		assert.Equal(t, admin, []admins.Domain{})
+
+		adminRepository.AssertExpectations(t)
+	})
 }
 
 func TestDeleteAdmin(t *testing.T) {
@@ -129,6 +168,19 @@ func TestDeleteAdmin(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.NotNil(t, admin)
+
+		adminRepository.AssertExpectations(t)
+	})
+
+	t.Run("Test case 2 | Error", func(t *testing.T) {
+		adminRepository.On("DeleteAdmin",
+			mock.Anything,
+			mock.AnythingOfType("int")).Return(admins.Domain{}, errors.New("Unexpected Error")).Once()
+
+		admin, err := adminService.DeleteAdmin(context.Background(), adminDomain.Id)
+
+		assert.Error(t, err)
+		assert.Equal(t, admin, admins.Domain{})
 
 		adminRepository.AssertExpectations(t)
 	})
@@ -164,7 +216,20 @@ func TestRegisterAdmin(t *testing.T) {
 		assert.Equal(t, "Pabby", admin.Name)
 	})
 
-	t.Run("Test Case 2 | Invalid Email Empty", func(t *testing.T) {
+	t.Run("Test case 2 | Error Registry", func(t *testing.T) {
+		adminRepository.On("RegisterAdmin",
+			mock.Anything,
+			mock.AnythingOfType("admins.Domain")).Return(admins.Domain{}, errors.New("Unexpected Error")).Once()
+		admin, err := adminService.RegisterAdmin(context.Background(), admins.Domain{
+			Email:    "daaffa@net.usc",
+			Password: "kecoak11",
+		})
+
+		assert.Error(t, err)
+		assert.Equal(t, admin, admins.Domain{})
+	})
+
+	t.Run("Test Case 3 | Invalid Email Empty", func(t *testing.T) {
 		adminRepository.On("RegisterAdmin",
 			mock.Anything,
 			mock.AnythingOfType("admins.Domain")).Return(adminDomain, nil).Once()
@@ -200,5 +265,57 @@ func TestHardDeleteAllAdmin(t *testing.T) {
 		assert.NoError(t, err)
 
 		// adminRepository.AssertExpectations(t)
+	})
+
+	t.Run("Test case 2 | Error", func(t *testing.T) {
+		adminRepository.On("HardDeleteAllAdmins",
+			mock.Anything).Return(errors.New("Unexpected Error")).Once()
+
+		err := adminService.HardDeleteAllAdmins(context.Background())
+
+		assert.Error(t, err)
+
+		// adminRepository.AssertExpectations(t)
+	})
+}
+
+func TestUpdateAdmin(t *testing.T) {
+	setup()
+	// adminsDomain = append(adminsDomain, adminDomain)
+
+	t.Run("Test case 1", func(t *testing.T) {
+		adminRepository.On("UpdateAdmin",
+			mock.Anything,
+			mock.AnythingOfType("admins.Domain")).Return(adminDomain, nil).Once()
+
+		admin, err := adminService.UpdateAdmin(context.Background(), admins.Domain{
+			Email:    "daaffa@net.usc",
+			Password: "kecoak11",
+			Name:     "Pablo",
+			Address:  "Cambridge",
+		})
+
+		assert.NoError(t, err)
+		assert.Equal(t, admin.Address, "Cambridge")
+
+		adminRepository.AssertExpectations(t)
+	})
+
+	t.Run("Test case 2 | Error", func(t *testing.T) {
+		adminRepository.On("UpdateAdmin",
+			mock.Anything,
+			mock.AnythingOfType("admins.Domain")).Return(admins.Domain{}, errors.New("Unexpected Error")).Once()
+
+		admin, err := adminService.UpdateAdmin(context.Background(), admins.Domain{
+			Email:    "daaffa@net.usc",
+			Password: "kecoak11",
+			Name:     "Pablo",
+			Address:  "Cambridge",
+		})
+
+		assert.Error(t, err)
+		assert.Equal(t, admin, admins.Domain{})
+
+		adminRepository.AssertExpectations(t)
 	})
 }

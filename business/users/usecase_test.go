@@ -2,6 +2,7 @@ package users_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
@@ -12,14 +13,14 @@ import (
 )
 
 var userRepository _mockUserRepository.Repository
-var userservice users.Usecase
+var userService users.Usecase
 var userDomain users.Domain
 var usersDomain []users.Domain
 
 // var configJWT *middlewares.ConfigJWT
 
 func setup() {
-	userservice = users.NewUserUsecase(&userRepository, time.Hour*1 /*, configJWT */)
+	userService = users.NewUserUsecase(&userRepository, time.Hour*1 /*, configJWT */)
 	userDomain = users.Domain{
 		Id:      1,
 		Name:    "Pabby",
@@ -40,7 +41,7 @@ func TestLogin(t *testing.T) {
 		mock.AnythingOfType("users.Domain")).Return(userDomain, nil).Once()
 
 	t.Run("Test case 1 | Valid Login", func(t *testing.T) {
-		user, err := userservice.Login(context.Background(), users.Domain{
+		user, err := userService.Login(context.Background(), users.Domain{
 			Email:    "daaffa@net.usc",
 			Password: "kecoak11",
 		})
@@ -49,18 +50,31 @@ func TestLogin(t *testing.T) {
 		assert.Equal(t, "Pabby", user.Name)
 	})
 
-	t.Run("Test Case 2 | Invalid Email Empty", func(t *testing.T) {
+	t.Run("Test case 2 | Error Login", func(t *testing.T) {
+		userRepository.On("Login",
+			mock.Anything,
+			mock.AnythingOfType("users.Domain")).Return(users.Domain{}, errors.New("Unexpected Error")).Once()
+		user, err := userService.Login(context.Background(), users.Domain{
+			Email:    "daaffa@net.usc",
+			Password: "kecoak11",
+		})
 
-		_, err := userservice.Login(context.Background(), users.Domain{
+		assert.NotNil(t, err)
+		assert.Equal(t, user, users.Domain{})
+	})
+
+	t.Run("Test Case 3 | Invalid Email Empty", func(t *testing.T) {
+
+		_, err := userService.Login(context.Background(), users.Domain{
 			Email:    "",
 			Password: "kecoak11",
 		})
 		assert.NotNil(t, err)
 	})
 
-	t.Run("Test Case 3 | Invalid Password Empty", func(t *testing.T) {
+	t.Run("Test Case 4 | Invalid Password Empty", func(t *testing.T) {
 
-		_, err := userservice.Login(context.Background(), users.Domain{
+		_, err := userService.Login(context.Background(), users.Domain{
 			Email:    "daaffa@net.usc",
 			Password: "",
 		})
@@ -69,7 +83,7 @@ func TestLogin(t *testing.T) {
 
 }
 
-func TestGetuserById(t *testing.T) {
+func TestGetUserById(t *testing.T) {
 	setup()
 
 	t.Run("Test case 1", func(t *testing.T) {
@@ -77,7 +91,7 @@ func TestGetuserById(t *testing.T) {
 			mock.Anything,
 			mock.AnythingOfType("int")).Return(userDomain, nil).Once()
 
-		user, err := userservice.GetUserById(context.Background(), userDomain.Id)
+		user, err := userService.GetUserById(context.Background(), userDomain.Id)
 
 		assert.NoError(t, err)
 		assert.NotNil(t, user)
@@ -85,12 +99,25 @@ func TestGetuserById(t *testing.T) {
 		userRepository.AssertExpectations(t)
 	})
 
+	t.Run("Test case 2 | Error", func(t *testing.T) {
+		userRepository.On("GetUserById",
+			mock.Anything,
+			mock.AnythingOfType("int")).Return(users.Domain{}, errors.New("Unexpected Error")).Once()
+
+		user, err := userService.GetUserById(context.Background(), userDomain.Id)
+
+		assert.Error(t, err)
+		assert.Equal(t, user, users.Domain{})
+
+		userRepository.AssertExpectations(t)
+	})
+
 	// t.Run("Test case 2 | Error Failed", func(t *testing.T) {
-	// 	userRepository.On("GetuserById",
+	// 	userRepository.On("GetUserById",
 	// 		mock.Anything,
 	// 		mock.AnythingOfType("int")).Return(userDomain, nil).Once()
 
-	// 	user, err := userservice.GetuserById(context.Background(), userDomain.Id)
+	// 	user, err := userService.GetUserById(context.Background(), userDomain.Id)
 
 	// 	assert.Error(t, err)
 	// 	assert.Equal(t, users.Domain{}, user)
@@ -99,7 +126,7 @@ func TestGetuserById(t *testing.T) {
 	// })
 }
 
-func TestGetAlluser(t *testing.T) {
+func TestGetAllUser(t *testing.T) {
 	setup()
 	// usersDomain = append(usersDomain, userDomain)
 
@@ -107,16 +134,28 @@ func TestGetAlluser(t *testing.T) {
 		userRepository.On("GetAllUser",
 			mock.Anything).Return(usersDomain, nil).Once()
 
-		user, err := userservice.GetAllUser(context.Background())
+		user, err := userService.GetAllUser(context.Background())
 
 		assert.NoError(t, err)
 		assert.NotNil(t, user)
 
 		userRepository.AssertExpectations(t)
 	})
+
+	t.Run("Test case 2 | Error", func(t *testing.T) {
+		userRepository.On("GetAllUser",
+			mock.Anything).Return([]users.Domain{}, errors.New("Unexpected Error")).Once()
+
+		user, err := userService.GetAllUser(context.Background())
+
+		assert.Error(t, err)
+		assert.Equal(t, user, []users.Domain{})
+
+		userRepository.AssertExpectations(t)
+	})
 }
 
-func TestDeleteuser(t *testing.T) {
+func TestDeleteUser(t *testing.T) {
 	setup()
 
 	t.Run("Test case 1", func(t *testing.T) {
@@ -124,7 +163,7 @@ func TestDeleteuser(t *testing.T) {
 			mock.Anything,
 			mock.AnythingOfType("int")).Return(userDomain, nil).Once()
 
-		user, err := userservice.DeleteUser(context.Background(), userDomain.Id)
+		user, err := userService.DeleteUser(context.Background(), userDomain.Id)
 
 		assert.NoError(t, err)
 		assert.NotNil(t, user)
@@ -132,12 +171,25 @@ func TestDeleteuser(t *testing.T) {
 		userRepository.AssertExpectations(t)
 	})
 
+	t.Run("Test case 2 | Error", func(t *testing.T) {
+		userRepository.On("DeleteUser",
+			mock.Anything,
+			mock.AnythingOfType("int")).Return(users.Domain{}, errors.New("Unexpected Error")).Once()
+
+		user, err := userService.DeleteUser(context.Background(), userDomain.Id)
+
+		assert.Error(t, err)
+		assert.Equal(t, user, users.Domain{})
+
+		userRepository.AssertExpectations(t)
+	})
+
 	// t.Run("Test case 2 | Error Failed", func(t *testing.T) {
-	// 	userRepository.On("GetuserById",
+	// 	userRepository.On("GetUserById",
 	// 		mock.Anything,
 	// 		mock.AnythingOfType("int")).Return(userDomain, nil).Once()
 
-	// 	user, err := userservice.GetuserById(context.Background(), userDomain.Id)
+	// 	user, err := userService.GetUserById(context.Background(), userDomain.Id)
 
 	// 	assert.Error(t, err)
 	// 	assert.Equal(t, users.Domain{}, user)
@@ -154,7 +206,7 @@ func TestRegisterUser(t *testing.T) {
 		userRepository.On("RegisterUser",
 			mock.Anything,
 			mock.AnythingOfType("users.Domain")).Return(userDomain, nil).Once()
-		user, err := userservice.RegisterUser(context.Background(), users.Domain{
+		user, err := userService.RegisterUser(context.Background(), users.Domain{
 			Email:    "daaffa@net.usc",
 			Password: "kecoak11",
 		})
@@ -163,26 +215,80 @@ func TestRegisterUser(t *testing.T) {
 		assert.Equal(t, "Pabby", user.Name)
 	})
 
-	t.Run("Test Case 2 | Invalid Email Empty", func(t *testing.T) {
+	t.Run("Test case 2 | Error Registry", func(t *testing.T) {
+		userRepository.On("RegisterUser",
+			mock.Anything,
+			mock.AnythingOfType("users.Domain")).Return(users.Domain{}, errors.New("Unexpected Error")).Once()
+		user, err := userService.RegisterUser(context.Background(), users.Domain{
+			Email:    "daaffa@net.usc",
+			Password: "kecoak11",
+		})
+
+		assert.Error(t, err)
+		assert.Equal(t, user, users.Domain{})
+	})
+
+	t.Run("Test Case 3 | Invalid Email Empty", func(t *testing.T) {
 		userRepository.On("RegisterUser",
 			mock.Anything,
 			mock.AnythingOfType("users.Domain")).Return(userDomain, nil).Once()
-		_, err := userservice.RegisterUser(context.Background(), users.Domain{
+		_, err := userService.RegisterUser(context.Background(), users.Domain{
 			Email:    "",
 			Password: "kecoak11",
 		})
 		assert.NotNil(t, err)
 	})
 
-	t.Run("Test Case 3 | Invalid Password Empty", func(t *testing.T) {
+	t.Run("Test Case 4 | Invalid Password Empty", func(t *testing.T) {
 		userRepository.On("RegisterUser",
 			mock.Anything,
 			mock.AnythingOfType("users.Domain")).Return(userDomain, nil).Once()
-		_, err := userservice.RegisterUser(context.Background(), users.Domain{
+		_, err := userService.RegisterUser(context.Background(), users.Domain{
 			Email:    "daaffa@net.usc",
 			Password: "",
 		})
 		assert.NotNil(t, err)
 	})
 
+}
+
+func TestUpdateUser(t *testing.T) {
+	setup()
+	// usersDomain = append(usersDomain, companyDomain)
+
+	t.Run("Test case 1", func(t *testing.T) {
+		userRepository.On("UpdateUser",
+			mock.Anything,
+			mock.AnythingOfType("users.Domain")).Return(userDomain, nil).Once()
+
+		user, err := userService.UpdateUser(context.Background(), users.Domain{
+			Name:     "Pablo",
+			Address:  "Cambridge",
+			Email:    "daaffa@net.usc",
+			Password: "kecoak11",
+		})
+
+		assert.NoError(t, err)
+		assert.Equal(t, user.Address, "Cambridge")
+
+		userRepository.AssertExpectations(t)
+	})
+
+	t.Run("Test case 2 | Error", func(t *testing.T) {
+		userRepository.On("UpdateUser",
+			mock.Anything,
+			mock.AnythingOfType("users.Domain")).Return(users.Domain{}, errors.New("Unexpected Error")).Once()
+
+		user, err := userService.UpdateUser(context.Background(), users.Domain{
+			Name:     "Pablo",
+			Address:  "Cambridge",
+			Email:    "daaffa@net.usc",
+			Password: "kecoak11",
+		})
+
+		assert.Error(t, err)
+		assert.Equal(t, user, users.Domain{})
+
+		userRepository.AssertExpectations(t)
+	})
 }
