@@ -1,0 +1,1 @@
+mysql -h dbjobdir.csqmv4ve5mfp.us-east-2.rds.amazonaws.com -u admin -p

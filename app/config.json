@@ -18,6 +18,7 @@
         "expired": 72
     },
     "logger": {
+        "host": "localhost",
         "format": "method=${method}, uri=${uri}, status=${status}"
     }
 }

@@ -63,7 +63,7 @@ func main() {
 	}
 
 	configMongo := _mongoDriver.ConfigMongo{
-		DB_Host: viper.GetString(`database.host`),
+		DB_Host: viper.GetString(`logger.host`),
 	}
 
 	configJWT := middlewares.ConfigJWT{
