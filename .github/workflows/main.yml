@@ -39,10 +39,28 @@ jobs:
     - name: push the previously built image to registry
       run: docker push daffaalex22/kampus_merdeka:1.0.0
 
-  # deployment-to-ec2:
-  #   name: 'Deploy the image pushed to dockehub registry, to EC2'
-  #   runs-on: ubuntu-latest
-  #   needs: build-push-docker
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - 
+#job 3: pull and deploy from AWS EC2
+  deployment-to-ec2:
+    name: 'Deploy the image pushed to dockehub registry, to EC2'
+    runs-on: ubuntu-latest
+    needs: build-push-docker
+    steps:
+      - uses: actions/checkout@v2
+      - name: configuration SSH
+        env:
+          SSH_USER: ${{ secrets.SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/jobdir.pem
+          chmod 400 ~/.ssh/jobdir.pem
+          cat >>~/.ssh/config <<END
+          Host development
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/jobdir.pem
+            StrictHostKeyChecking=no
+          END
+      - name: Connect EC2 & Remove All Container & Pull from Registry & Run on Container
+        run: ssh development 'docker rm -f $(docker ps -a -q) && docker pull daffaalex22/kampus_merdeka:1.0.0 && docker run -d -p 8080:8080 --name kampus_merdeka daffaalex22/kampus_merdeka:1.0.0'
