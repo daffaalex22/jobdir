@@ -106,7 +106,7 @@ func main() {
 	categoryController := _categoryController.NewCategoryController(categoryUseCase)
 
 	adminRepository := _admindb.NewMysqlAdminRepository(Conn)
-	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext /*, &configJWT*/)
+	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext, &configJWT)
 	adminController := _adminController.NewAdminController(adminUseCase)
 
 	companyRepository := _companydb.NewMysqlCompanyRepository(Conn)

@@ -19,10 +19,10 @@ var userService users.Usecase
 var userDomain users.Domain
 var usersDomain []users.Domain
 
-// var configJWT *middlewares.ConfigJWT
+var configJWT middlewares.ConfigJWT
 
 func setup() {
-	configJWT := middlewares.ConfigJWT{
+	configJWT = middlewares.ConfigJWT{
 		SecretJWT:       viper.GetString(`jwt.secret`),
 		ExpiresDuration: viper.GetInt(`jwt.expired`),
 	}
@@ -270,13 +270,13 @@ func TestUpdateUser(t *testing.T) {
 
 		user, err := userService.UpdateUser(context.Background(), users.Domain{
 			Name:     "Pablo",
-			Address:  "Cambridge",
+			Address:  "Belanda",
 			Email:    "daaffa@net.usc",
 			Password: "kecoak11",
 		})
 
 		assert.NoError(t, err)
-		assert.Equal(t, user.Address, "Cambridge")
+		assert.Equal(t, user.Address, "Belanda")
 
 		userRepository.AssertExpectations(t)
 	})

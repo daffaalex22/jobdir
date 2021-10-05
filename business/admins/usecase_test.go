@@ -6,8 +6,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"main.go/app/middlewares"
 	"main.go/business/admins"
 	_mockAdminRepository "main.go/business/admins/mocks"
 )
@@ -17,10 +19,14 @@ var adminService admins.Usecase
 var adminDomain admins.Domain
 var adminsDomain []admins.Domain
 
-// var configJWT *middlewares.ConfigJWT
+var configJWT middlewares.ConfigJWT
 
 func setup() {
-	adminService = admins.NewAdminUsecase(&adminRepository, time.Hour*1 /*, configJWT */)
+	configJWT = middlewares.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
+	adminService = admins.NewAdminUsecase(&adminRepository, time.Hour*1, &configJWT)
 	adminDomain = admins.Domain{
 		Id:        1,
 		Name:      "Pabby",
@@ -292,11 +298,11 @@ func TestUpdateAdmin(t *testing.T) {
 			Email:    "daaffa@net.usc",
 			Password: "kecoak11",
 			Name:     "Pablo",
-			Address:  "Cambridge",
+			Address:  "Belanda",
 		})
 
 		assert.NoError(t, err)
-		assert.Equal(t, admin.Address, "Cambridge")
+		assert.Equal(t, admin.Address, "Belanda")
 
 		adminRepository.AssertExpectations(t)
 	})

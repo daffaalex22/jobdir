@@ -17,8 +17,6 @@ var companyService companies.Usecase
 var companyDomain companies.Domain
 var companiesDomain []companies.Domain
 
-// var configJWT *middlewares.ConfigJWT
-
 func setup() {
 	companyService = companies.NewCompanyUsecase(&companyRepository, time.Hour*1 /*, configJWT */)
 	companyDomain = companies.Domain{
@@ -228,13 +226,13 @@ func TestUpdateCompany(t *testing.T) {
 
 		admin, err := companyService.UpdateCompany(context.Background(), companies.Domain{
 			Name:         "Pablo",
-			Address:      "Cambridge",
+			Address:      "Bandungs",
 			Description:  "Kemantapan Perusahaan",
 			IsTopCompany: false,
 		})
 
 		assert.NoError(t, err)
-		assert.Equal(t, admin.Address, "Cambridge")
+		assert.Equal(t, admin.Address, "Bandungs")
 
 		companyRepository.AssertExpectations(t)
 	})
@@ -246,7 +244,7 @@ func TestUpdateCompany(t *testing.T) {
 
 		admin, err := companyService.UpdateCompany(context.Background(), companies.Domain{
 			Name:         "Pablo",
-			Address:      "Cambridge",
+			Address:      "Bandungs",
 			Description:  "Kemantapan Perusahaan",
 			IsTopCompany: false,
 		})
