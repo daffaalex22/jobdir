@@ -22,8 +22,27 @@ jobs:
     - name: Running unit test
       run: go test ./... -cover
 
-  # #job 2: build docker image, push registry
-  # build-push-docker:
-  #   name: "Build image and push to registry"
+  #job 2: build docker image, push registry
+  build-push-docker:
+    name: 'Build image and push to registry'
+    runs-on: ubuntu-latest
+    needs: unit-test
+    steps:
+    - uses: actions/checkout@v2
+    - name: build docker
+      run: docker build -t daffaalex22/kampus_merdeka:1.0.0 .
+    - name: login to docker hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    - name: push the previously built image to registry
+      run: docker push daffaalex22/kampus_merdeka:1.0.0
+
+  # deployment-to-ec2:
+  #   name: 'Deploy the image pushed to dockehub registry, to EC2'
   #   runs-on: ubuntu-latest
-  #   needs: unit-test
+  #   needs: build-push-docker
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - 
