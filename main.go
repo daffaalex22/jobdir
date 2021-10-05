@@ -28,13 +28,12 @@ import (
 	_companydb "main.go/drivers/databases/companies"
 	_jobdb "main.go/drivers/databases/jobs"
 	_userdb "main.go/drivers/databases/users"
-	_mongoDriver "main.go/drivers/mongodb"
 	_mysqlDriver "main.go/drivers/mysql"
-	"main.go/helpers/mongowriter"
+	// "main.go/helpers/mongowriter"
 )
 
 func init() {
-	viper.SetConfigFile(`app/config.json`)
+	viper.SetConfigFile(`config.json`)
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(err)
@@ -62,9 +61,9 @@ func main() {
 		DB_Database: viper.GetString(`database.name`),
 	}
 
-	configMongo := _mongoDriver.ConfigMongo{
-		DB_Host: viper.GetString(`logger.host`),
-	}
+	// configMongo := _mongoDriver.ConfigMongo{
+	// 	DB_Host: viper.GetString(`logger.host`),
+	// }
 
 	configJWT := middlewares.ConfigJWT{
 		SecretJWT:       viper.GetString(`jwt.secret`),
@@ -75,10 +74,10 @@ func main() {
 	// 	Format: viper.GetString(`logger.format`),
 	// }
 
-	Session := configMongo.InitMongo()
-	mw := &mongowriter.MongoWriter{
-		Session: Session,
-	}
+	// Session := configMongo.InitMongo()
+	// mw := &mongowriter.MongoWriter{
+	// 	Session: Session,
+	// }
 
 	Conn := configDB.InitialDB()
 	DbMigrate(Conn)
@@ -87,15 +86,15 @@ func main() {
 	e.Pre(middleware.RemoveTrailingSlash())
 	// configLogger.MongoOut(e, mw)
 
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "method=${method}, uri=${uri}, status=${status}",
-	}))
-	e.Logger.SetOutput(mw)
+	// e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+	// 	Format: "method=${method}, uri=${uri}, status=${status}",
+	// }))
+	// e.Logger.SetOutput(mw)
 
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	userRepository := _userdb.NewMysqlUserRepository(Conn)
-	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext /*, &configJWT*/)
+	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext, &configJWT)
 	userController := _userController.NewUserController(userUseCase)
 
 	jobRepository := _jobdb.NewMysqlJobRepository(Conn)

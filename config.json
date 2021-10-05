@@ -1,0 +1,24 @@
+{
+    "debug": true,
+    "server": {
+        "address": ":8080"
+    },
+    "context": {
+        "timeout": 2
+    },
+    "database": {
+        "host": "dbjobdir.csqmv4ve5mfp.us-east-2.rds.amazonaws.com",
+        "port": "3306",
+        "user": "admin",
+        "pass": "haji12345",
+        "name": "dbjobdir"
+    },
+    "jwt": {
+        "secret": "KECOAK#22",
+        "expired": 72
+    },
+    "logger": {
+        "host": "localhost",
+        "format": "method=${method}, uri=${uri}, status=${status}"
+    }
+}

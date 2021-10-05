@@ -6,8 +6,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"main.go/app/middlewares"
 	"main.go/business/users"
 	_mockUserRepository "main.go/business/users/mocks"
 )
@@ -20,7 +22,11 @@ var usersDomain []users.Domain
 // var configJWT *middlewares.ConfigJWT
 
 func setup() {
-	userService = users.NewUserUsecase(&userRepository, time.Hour*1 /*, configJWT */)
+	configJWT := middlewares.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
+	userService = users.NewUserUsecase(&userRepository, time.Hour*1, &configJWT)
 	userDomain = users.Domain{
 		Id:      1,
 		Name:    "Pabby",
@@ -31,6 +37,7 @@ func setup() {
 		Token:    "123",
 	}
 	usersDomain = append(usersDomain, userDomain)
+
 }
 
 func TestLogin(t *testing.T) {

@@ -37,7 +37,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	// ADMIN
 	e.POST("admins/login", cl.AdminController.Login)
 	e.POST("admins/register", cl.AdminController.RegisterAdmin)
-	e.GET("admins/:userId", cl.AdminController.GetAdminById, jwt)
+	e.GET("admins/:adminId", cl.AdminController.GetAdminById, jwt)
 	e.GET("admins", cl.AdminController.GetAllAdmin, jwt)
 	e.PUT("admins", cl.AdminController.UpdateAdmin)
 	e.DELETE("admins/:adminId", cl.AdminController.DeleteAdmin)
