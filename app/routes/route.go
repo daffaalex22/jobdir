@@ -57,8 +57,8 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.GET("jobs", cl.JobController.GetAllJobs)
 	e.GET("jobs/:jobId", cl.JobController.GetJobById)
 	e.DELETE("jobs/:jobId", cl.JobController.DeleteJobById)
-	e.GET("jobs/result", cl.JobController.SearchJobs)
-	e.GET("jobs/result", cl.JobController.FilterJobByCategory)
+	e.GET("jobs/search", cl.JobController.SearchJobs)
+	e.GET("jobs/filter", cl.JobController.FilterJobByCategory)
 
 	// APPLICATION
 	e.POST("applications", cl.ApplicationController.CreateApplication)
