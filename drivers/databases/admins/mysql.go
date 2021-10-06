@@ -59,27 +59,37 @@ func (rep *MysqlAdminRepository) GetAllAdmin(ctx context.Context) ([]admins.Doma
 }
 
 func (rep *MysqlAdminRepository) UpdateAdmin(ctx context.Context, domain admins.Domain) (admins.Domain, error) {
-	var Admin Admins
+	var admin Admins
 
-	result := rep.Conn.Preload("JobsCreated.Category").Preload("JobsCreated.Applications").First(&Admin, "email = ? AND password = ?", domain.Email, domain.Password)
-
-	if result.Error != nil {
-		return admins.Domain{}, result.Error
-	}
-
-	result = rep.Conn.Model(&Admin).Updates(FromDomain(domain))
+	result := rep.Conn.Preload("JobsCreated.Category").Preload("JobsCreated.Applications").First(&admin, "email = ?", domain.Email)
 
 	if result.Error != nil {
 		return admins.Domain{}, result.Error
 	}
 
-	result = rep.Conn.Save(&Admin)
+	err := encrypt.CheckPassword(domain.Password, admin.Password)
+
+	if err != nil {
+		return admins.Domain{}, result.Error
+	}
 
 	if result.Error != nil {
 		return admins.Domain{}, result.Error
 	}
 
-	return Admin.ToDomain(), nil
+	result = rep.Conn.Model(&admin).Updates(FromDomain(domain))
+
+	if result.Error != nil {
+		return admins.Domain{}, result.Error
+	}
+
+	result = rep.Conn.Save(&admin)
+
+	if result.Error != nil {
+		return admins.Domain{}, result.Error
+	}
+
+	return admin.ToDomain(), nil
 }
 
 func (rep *MysqlAdminRepository) DeleteAdmin(ctx context.Context, id int) (admins.Domain, error) {
