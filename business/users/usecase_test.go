@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"main.go/app/middlewares"
+	"main.go/business/applications"
 	"main.go/business/users"
 	_mockUserRepository "main.go/business/users/mocks"
 )
@@ -32,7 +33,13 @@ func setup() {
 		Name:    "Pabby",
 		Email:   "daaffa@net.usc",
 		Address: "Belanda",
-		// JobsCreated: []jobs.Domain
+		Applications: []applications.Domain{
+			{
+				UserId: 1,
+				JobId:  1,
+				Status: "APPLYING",
+			},
+		},
 		Password: "kecoak11",
 		Token:    "123",
 	}
