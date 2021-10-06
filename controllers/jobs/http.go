@@ -97,7 +97,7 @@ func (JobController JobController) DeleteJobById(c echo.Context) error {
 }
 
 func (JobController JobController) SearchJobs(c echo.Context) error {
-	fmt.Println("GetAllJobs")
+	fmt.Println("Search Jobs")
 
 	title := c.QueryParam("title")
 
