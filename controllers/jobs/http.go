@@ -111,7 +111,7 @@ func (JobController JobController) SearchJobs(c echo.Context) error {
 }
 
 func (JobController JobController) FilterJobByCategory(c echo.Context) error {
-	fmt.Println("GetAllJobs")
+	fmt.Println("Filter Job By Category")
 
 	categoryId, err := strconv.Atoi(c.QueryParam("categoryId"))
 	if err != nil {
