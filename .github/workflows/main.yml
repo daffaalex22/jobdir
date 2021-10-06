@@ -39,7 +39,7 @@ jobs:
     - name: push the previously built image to registry
       run: docker push daffaalex22/kampus_merdeka:1.0.0
 
-#job 3: pull and deploy from AWS EC2
+  #job 3: pull and deploy from AWS EC2
   deployment-to-ec2:
     name: 'Deploy the image pushed to dockehub registry, to EC2'
     runs-on: ubuntu-latest
