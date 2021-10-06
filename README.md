@@ -1,17 +1,17 @@
 # jobdir
 
 ## Description
-This project is created during the Kemendikbud's Kampus Merdeka Program that the owner do on since August 2021. Alterra Academy is where the owner do the Independent Study (SI). Other than following a 3 hours daily live session, 3 hours daily self-learning and a daily tasks, participants are instructed to develop a RESTful API implementing all of the material that have been studied. 
+This project is created during the [Kemendikbud's Kampus Merdeka Program](https://kampusmerdeka.kemdikbud.go.id/) that the owner do on since August 2021. [Alterra Academy](https://academy.alterra.id/) is where the owner do the Independent Study (SI). Other than following a 3 hours daily live session, 3 hours daily self-learning and a daily tasks, participants are instructed to develop a RESTful API implementing all of the material that have been studied. 
 
 In short, the RESTful API is about a Job Seeker Directory where users can have access to search jobs and directly apply. The project is written in Go Programming Language and implements the Clean Architecture Code Structure.
 
 Some of the technologies and libraries implemented on the projects are as follows:
-* Echo Labstack: A Golang Web Framework
-* GORM: A library for implementing ORM
-* Viper: Used for environment configurations
-* vektra/mockery: Used for creating mocks for unit testing 
-* testify: Used for unit testing
-* codegangsta/gin: A live reload utility
+* [Echo Labstack](echo.labstack.com): A Golang Web Framework
+* [GORM](https://gorm.io/): A library for implementing ORM
+* [Viper](https://github.com/spf13/viper): Used for environment configurations
+* [vektra/mockery](https://github.com/vektra/mockery): Used for creating mocks for unit testing 
+* [stretchr/testify](https://github.com/stretchr/testify): Used for unit testing
+* [codegangsta/gin](https://github.com/codegangsta/gin): A live reload utility
 
 The database management system used are both SQL and NoSQL:
 * MySQL: The main database used are relational database, this is where the API stores the entity
