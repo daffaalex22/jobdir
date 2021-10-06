@@ -20,7 +20,7 @@ func NewMysqlJobRepository(conn *gorm.DB) jobs.Repository {
 func (rep *MysqlJobRepository) CreateJob(ctx context.Context, domain jobs.Domain) (jobs.Domain, error) {
 	job := FromDomain(domain)
 
-	result := rep.Conn.Create(&job)
+	result := rep.Conn.Preload("Category").Create(&job)
 
 	if result.Error != nil {
 		return jobs.Domain{}, result.Error

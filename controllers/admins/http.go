@@ -104,13 +104,13 @@ func (AdminController AdminController) RegisterAdmin(c echo.Context) error {
 	c.Bind(&AdminRegister)
 
 	ctx := c.Request().Context()
-	Admin, error := AdminController.AdminUseCase.RegisterAdmin(ctx, AdminRegister.ToDomain())
+	admin, error := AdminController.AdminUseCase.RegisterAdmin(ctx, AdminRegister.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.FromDomain(Admin))
+	return controllers.NewSuccessResponse(c, responses.FromDomain(admin))
 }
 
 func (AdminController AdminController) HardDeleteAllAdmins(c echo.Context) error {
