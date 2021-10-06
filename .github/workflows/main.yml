@@ -3,9 +3,11 @@ on:
   pull_request:
     branches:
       - 'main'
+      - 'development'
   push:
     branches:
       - 'main'
+      - 'development'
 
 jobs:
   #job 1: unit test
