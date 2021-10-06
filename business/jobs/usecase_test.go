@@ -8,6 +8,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"main.go/business/applications"
+	"main.go/business/categories"
 	"main.go/business/jobs"
 	_mockJobRepository "main.go/business/jobs/mocks"
 )
@@ -25,9 +27,20 @@ func setup() {
 		Id:         1,
 		Title:      "Software Engineer",
 		CategoryId: 1,
-		JobDesc:    "Kerja Lembur Bagai Kuda",
-		CreatedBy:  1,
-		CompanyId:  1,
+		Category: categories.Domain{
+			Id:       1,
+			Category: "Software Development",
+		},
+		JobDesc:   "Kerja Lembur Bagai Kuda",
+		CreatedBy: 1,
+		CompanyId: 1,
+		Applications: []applications.Domain{
+			{
+				UserId: 1,
+				JobId:  1,
+				Status: "APPLYING",
+			},
+		},
 	}
 	jobsDomain = append(jobsDomain, jobDomain)
 }

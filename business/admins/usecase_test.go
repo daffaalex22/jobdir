@@ -12,6 +12,7 @@ import (
 	"main.go/app/middlewares"
 	"main.go/business/admins"
 	_mockAdminRepository "main.go/business/admins/mocks"
+	"main.go/business/jobs"
 )
 
 var adminRepository _mockAdminRepository.Repository
@@ -33,7 +34,16 @@ func setup() {
 		Email:     "daaffa@net.usc",
 		Address:   "Belanda",
 		CompanyId: 1,
-		// JobsCreated: []jobs.Domain
+		JobsCreated: []jobs.Domain{
+			{
+				Id:         1,
+				Title:      "Software Engineer",
+				CategoryId: 1,
+				JobDesc:    "Kerja Lembur Bagai Kuda",
+				CreatedBy:  1,
+				CompanyId:  1,
+			},
+		},
 		Password: "kecoak11",
 		Token:    "123",
 	}

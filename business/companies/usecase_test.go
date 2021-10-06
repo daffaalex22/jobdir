@@ -8,8 +8,12 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"main.go/business/admins"
+	"main.go/business/applications"
+	"main.go/business/categories"
 	"main.go/business/companies"
 	_mockcompanyRepository "main.go/business/companies/mocks"
+	"main.go/business/jobs"
 )
 
 var companyRepository _mockcompanyRepository.Repository
@@ -25,6 +29,48 @@ func setup() {
 		Address:      "Bandungs",
 		Description:  "Nadiem Makarim utk Presiden",
 		IsTopCompany: true,
+		Admins: []admins.Domain{
+			{
+				Id:        1,
+				Name:      "Pabby",
+				Email:     "daaffa@net.usc",
+				Address:   "Belanda",
+				CompanyId: 1,
+				JobsCreated: []jobs.Domain{
+					{
+						Id:         1,
+						Title:      "Software Engineer",
+						CategoryId: 1,
+						JobDesc:    "Kerja Lembur Bagai Kuda",
+						CreatedBy:  1,
+						CompanyId:  1,
+					},
+				},
+				Password: "kecoak11",
+				Token:    "123",
+			},
+		},
+		Jobs: []jobs.Domain{
+			{
+				Id:         1,
+				Title:      "Software Engineer",
+				CategoryId: 1,
+				Category: categories.Domain{
+					Id:       1,
+					Category: "Software Development",
+				},
+				JobDesc:   "Kerja Lembur Bagai Kuda",
+				CreatedBy: 1,
+				CompanyId: 1,
+				Applications: []applications.Domain{
+					{
+						UserId: 1,
+						JobId:  1,
+						Status: "APPLYING",
+					},
+				},
+			},
+		},
 	}
 	companiesDomain = append(companiesDomain, companyDomain)
 }
