@@ -65,21 +65,27 @@ func (rep *MysqlUserRepository) UpdateUser(ctx context.Context, domain users.Dom
 	result := rep.Conn.First(&user, "email = ?", domain.Email)
 
 	if result.Error != nil {
-		fmt.Println("Gagal Mengambil User di DB")
+		// fmt.Println("Gagal Mengambil User di DB")
 		return users.Domain{}, result.Error
 	}
 
 	err := encrypt.CheckPassword(domain.Password, user.Password)
 
 	if err != nil {
-		fmt.Println("Gagal Mengecek Password")
+		// fmt.Println("Gagal Mengecek Password")
 		return users.Domain{}, result.Error
 	}
 
+	hashedPassword, err := encrypt.Hash(domain.Password)
+	if err != nil {
+		return users.Domain{}, err
+	}
+
+	domain.Password = hashedPassword
 	result = rep.Conn.Model(&user).Updates(FromDomain(domain))
 
 	if result.Error != nil {
-		fmt.Println("Gagal Update Di DB")
+		// fmt.Println("Gagal Update Di DB")
 		return users.Domain{}, result.Error
 	}
 
