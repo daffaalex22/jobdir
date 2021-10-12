@@ -42,7 +42,7 @@ func (rep *MysqlCompanyRepository) GetAllCompany(ctx context.Context) ([]compani
 func (rep *MysqlCompanyRepository) UpdateCompany(ctx context.Context, domain companies.Domain) (companies.Domain, error) {
 	var company Companies
 
-	result := rep.Conn.Where(&domain).First(&company)
+	result := rep.Conn.Where(FromDomain(domain)).First(&company)
 
 	if result.Error != nil {
 		return companies.Domain{}, result.Error

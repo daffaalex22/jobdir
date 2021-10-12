@@ -69,7 +69,7 @@ func (CompanyController CompanyController) UpdateCompany(c echo.Context) error {
 func (CompanyController CompanyController) DeleteCompany(c echo.Context) error {
 	fmt.Println("DeleteCompany")
 
-	companyId, err := strconv.Atoi(c.Param("CompanyId"))
+	companyId, err := strconv.Atoi(c.Param("companyId"))
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}

@@ -40,7 +40,7 @@ func (AdminController AdminController) Login(c echo.Context) error {
 func (AdminController AdminController) GetAdminById(c echo.Context) error {
 	fmt.Println("GetById")
 
-	adminId, err := strconv.Atoi(c.Param("AdminId"))
+	adminId, err := strconv.Atoi(c.Param("adminId"))
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}

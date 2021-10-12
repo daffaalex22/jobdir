@@ -52,7 +52,7 @@ func (CategoryController CategoryController) GetAllCategory(c echo.Context) erro
 func (CategoryController CategoryController) GetCategoryById(c echo.Context) error {
 	fmt.Println("GetCategoryById")
 
-	categoryId, err := strconv.Atoi(c.Param("CategoryId"))
+	categoryId, err := strconv.Atoi(c.Param("categoryId"))
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
@@ -82,7 +82,7 @@ func (CategoryController CategoryController) GetCategoryById(c echo.Context) err
 func (CategoryController CategoryController) DeleteCategoryById(c echo.Context) error {
 	fmt.Println("DeleteCategoryById")
 
-	categoryId, err := strconv.Atoi(c.Param("CategoryId"))
+	categoryId, err := strconv.Atoi(c.Param("categoryId"))
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
