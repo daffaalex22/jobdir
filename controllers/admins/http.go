@@ -24,11 +24,11 @@ func NewAdminController(AdminUseCase admins.Usecase) *AdminController {
 
 func (AdminController AdminController) Login(c echo.Context) error {
 	fmt.Println("Login")
-	AdminLogin := requests.AdminLogin{}
-	c.Bind(&AdminLogin)
+	adminLogin := requests.AdminLogin{}
+	c.Bind(&adminLogin)
 
 	ctx := c.Request().Context()
-	Admin, error := AdminController.AdminUseCase.Login(ctx, AdminLogin.ToDomain())
+	Admin, error := AdminController.AdminUseCase.Login(ctx, adminLogin.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
@@ -40,71 +40,71 @@ func (AdminController AdminController) Login(c echo.Context) error {
 func (AdminController AdminController) GetAdminById(c echo.Context) error {
 	fmt.Println("GetById")
 
-	AdminId, err := strconv.Atoi(c.Param("AdminId"))
+	adminId, err := strconv.Atoi(c.Param("AdminId"))
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
 	ctx := c.Request().Context()
-	Admin, err := AdminController.AdminUseCase.GetAdminById(ctx, AdminId)
+	admin, err := AdminController.AdminUseCase.GetAdminById(ctx, adminId)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.FromDomain(Admin))
+	return controllers.NewSuccessResponse(c, responses.FromDomain(admin))
 }
 
 func (AdminController AdminController) GetAllAdmin(c echo.Context) error {
 	fmt.Println("GetAllAdmin")
 
 	ctx := c.Request().Context()
-	Admin, err := AdminController.AdminUseCase.GetAllAdmin(ctx)
+	admin, err := AdminController.AdminUseCase.GetAllAdmin(ctx)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.ListFromDomain(Admin))
+	return controllers.NewSuccessResponse(c, responses.ListFromDomain(admin))
 }
 
 func (AdminController AdminController) UpdateAdmin(c echo.Context) error {
 	fmt.Println("UpdateAdmin")
 
-	AdminUpdate := requests.AdminUpdate{}
-	c.Bind(&AdminUpdate)
+	adminUpdate := requests.AdminUpdate{}
+	c.Bind(&adminUpdate)
 
 	ctx := c.Request().Context()
-	Admin, err := AdminController.AdminUseCase.UpdateAdmin(ctx, AdminUpdate.ToDomain())
+	admin, err := AdminController.AdminUseCase.UpdateAdmin(ctx, adminUpdate.ToDomain())
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.FromDomain(Admin))
+	return controllers.NewSuccessResponse(c, responses.FromDomain(admin))
 }
 
 func (AdminController AdminController) DeleteAdmin(c echo.Context) error {
 	fmt.Println("DeleteAdmin")
 
-	AdminId, err := strconv.Atoi(c.Param("AdminId"))
+	adminId, err := strconv.Atoi(c.Param("adminId"))
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
 	ctx := c.Request().Context()
-	Admin, err := AdminController.AdminUseCase.DeleteAdmin(ctx, AdminId)
+	admin, err := AdminController.AdminUseCase.DeleteAdmin(ctx, adminId)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.FromDomain(Admin))
+	return controllers.NewSuccessResponse(c, responses.FromDomain(admin))
 }
 
 func (AdminController AdminController) RegisterAdmin(c echo.Context) error {
 	fmt.Println("RegisterAdmin")
-	AdminRegister := requests.AdminRegister{}
-	c.Bind(&AdminRegister)
+	adminRegister := requests.AdminRegister{}
+	c.Bind(&adminRegister)
 
 	ctx := c.Request().Context()
-	admin, error := AdminController.AdminUseCase.RegisterAdmin(ctx, AdminRegister.ToDomain())
+	admin, error := AdminController.AdminUseCase.RegisterAdmin(ctx, adminRegister.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)

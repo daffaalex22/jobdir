@@ -53,7 +53,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	// JOB
 	e.POST("jobs", cl.JobController.CreateJob)
-	e.DELETE("jobs", cl.JobController.DeleteAllJobs)
+	// e.DELETE("jobs", cl.JobController.DeleteAllJobs)
 	e.GET("jobs", cl.JobController.GetAllJobs)
 	e.GET("jobs/:jobId", cl.JobController.GetJobById)
 	e.DELETE("jobs/:jobId", cl.JobController.DeleteJobById)
@@ -62,7 +62,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	// APPLICATION
 	e.POST("applications", cl.ApplicationController.CreateApplication)
-	e.DELETE("applications", cl.ApplicationController.DeleteAllApplications)
+	// e.DELETE("applications", cl.ApplicationController.DeleteAllApplications)
 	e.GET("applications", cl.ApplicationController.GetAllApplications)
 	// e.GET("applications/:jobId", cl.JobController.GetJobById)
 	// e.DELETE("jobs/:jobId", cl.JobController.DeleteJobById)
