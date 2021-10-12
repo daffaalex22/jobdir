@@ -41,7 +41,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.GET("admins", cl.AdminController.GetAllAdmin, jwt)
 	e.PUT("admins", cl.AdminController.UpdateAdmin)
 	e.DELETE("admins/:adminId", cl.AdminController.DeleteAdmin)
-	e.DELETE("admins", cl.AdminController.HardDeleteAllAdmins)
+	// e.DELETE("admins", cl.AdminController.HardDeleteAllAdmins)
 
 	// COMPANY
 	e.POST("companies/register", cl.CompanyController.RegisterCompany)
@@ -49,7 +49,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.GET("companies", cl.CompanyController.GetAllCompany)
 	e.PUT("companies", cl.CompanyController.UpdateCompany)
 	e.DELETE("companies/:companyId", cl.CompanyController.DeleteCompany)
-	e.DELETE("companies", cl.CompanyController.HardDeleteAllCompanies)
+	// e.DELETE("companies", cl.CompanyController.HardDeleteAllCompanies)
 
 	// JOB
 	e.POST("jobs", cl.JobController.CreateJob)
