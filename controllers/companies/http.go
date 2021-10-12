@@ -31,56 +31,56 @@ func (CompanyController CompanyController) GetCompanyById(c echo.Context) error 
 	}
 
 	ctx := c.Request().Context()
-	Company, err := CompanyController.CompanyUseCase.GetCompanyById(ctx, companyId)
+	company, err := CompanyController.CompanyUseCase.GetCompanyById(ctx, companyId)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.FromDomain(Company))
+	return controllers.NewSuccessResponse(c, responses.FromDomain(company))
 }
 
 func (CompanyController CompanyController) GetAllCompany(c echo.Context) error {
 	fmt.Println("GetAllCompany")
 
 	ctx := c.Request().Context()
-	Company, err := CompanyController.CompanyUseCase.GetAllCompany(ctx)
+	company, err := CompanyController.CompanyUseCase.GetAllCompany(ctx)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.ListFromDomainAll(Company))
+	return controllers.NewSuccessResponse(c, responses.ListFromDomainAll(company))
 }
 
 func (CompanyController CompanyController) UpdateCompany(c echo.Context) error {
 	fmt.Println("UpdateCompany")
 
-	CompanyUpdate := requests.CompanyUpdate{}
-	c.Bind(&CompanyUpdate)
+	companyUpdate := requests.CompanyUpdate{}
+	c.Bind(&companyUpdate)
 
 	ctx := c.Request().Context()
-	Company, err := CompanyController.CompanyUseCase.UpdateCompany(ctx, CompanyUpdate.ToDomain())
+	company, err := CompanyController.CompanyUseCase.UpdateCompany(ctx, companyUpdate.ToDomain())
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.FromDomain(Company))
+	return controllers.NewSuccessResponse(c, responses.FromDomain(company))
 }
 
 func (CompanyController CompanyController) DeleteCompany(c echo.Context) error {
 	fmt.Println("DeleteCompany")
 
-	CompanyId, err := strconv.Atoi(c.Param("CompanyId"))
+	companyId, err := strconv.Atoi(c.Param("CompanyId"))
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
 	ctx := c.Request().Context()
-	Company, err := CompanyController.CompanyUseCase.DeleteCompany(ctx, CompanyId)
+	company, err := CompanyController.CompanyUseCase.DeleteCompany(ctx, companyId)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.FromDomain(Company))
+	return controllers.NewSuccessResponse(c, responses.FromDomain(company))
 }
 
 func (CompanyController CompanyController) RegisterCompany(c echo.Context) error {
