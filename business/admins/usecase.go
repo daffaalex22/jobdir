@@ -111,15 +111,3 @@ func (uc *AdminUsecase) RegisterAdmin(ctx context.Context, domain Domain) (Domai
 
 	return Admin, nil
 }
-
-func (uc *AdminUsecase) HardDeleteAllAdmins(c context.Context) error {
-	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
-	defer cancel()
-
-	err := uc.Repo.HardDeleteAllAdmins(ctx)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}

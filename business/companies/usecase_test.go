@@ -235,32 +235,6 @@ func TestRegisterCompany(t *testing.T) {
 
 }
 
-func TestHardDeleteAllCompany(t *testing.T) {
-	setup()
-
-	t.Run("Test case 1", func(t *testing.T) {
-		companyRepository.On("HardDeleteAllCompanies",
-			mock.Anything).Return(nil).Once()
-
-		err := companyService.HardDeleteAllCompanies(context.Background())
-
-		assert.NoError(t, err)
-
-		// companyRepository.AssertExpectations(t)
-	})
-
-	t.Run("Test case 2 | Error", func(t *testing.T) {
-		companyRepository.On("HardDeleteAllCompanies",
-			mock.Anything).Return(errors.New(mock.Anything)).Once()
-
-		err := companyService.HardDeleteAllCompanies(context.Background())
-
-		assert.Error(t, err)
-
-		// companyRepository.AssertExpectations(t)
-	})
-}
-
 func TestUpdateCompany(t *testing.T) {
 	setup()
 	// adminsDomain = append(adminsDomain, companyDomain)

@@ -269,32 +269,6 @@ func TestRegisterAdmin(t *testing.T) {
 
 }
 
-func TestHardDeleteAllAdmin(t *testing.T) {
-	setup()
-
-	t.Run("Test case 1", func(t *testing.T) {
-		adminRepository.On("HardDeleteAllAdmins",
-			mock.Anything).Return(nil).Once()
-
-		err := adminService.HardDeleteAllAdmins(context.Background())
-
-		assert.NoError(t, err)
-
-		// adminRepository.AssertExpectations(t)
-	})
-
-	t.Run("Test case 2 | Error", func(t *testing.T) {
-		adminRepository.On("HardDeleteAllAdmins",
-			mock.Anything).Return(errors.New("Unexpected Error")).Once()
-
-		err := adminService.HardDeleteAllAdmins(context.Background())
-
-		assert.Error(t, err)
-
-		// adminRepository.AssertExpectations(t)
-	})
-}
-
 func TestUpdateAdmin(t *testing.T) {
 	setup()
 	// adminsDomain = append(adminsDomain, adminDomain)

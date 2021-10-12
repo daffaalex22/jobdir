@@ -112,15 +112,3 @@ func (AdminController AdminController) RegisterAdmin(c echo.Context) error {
 
 	return controllers.NewSuccessResponse(c, responses.FromDomain(admin))
 }
-
-func (AdminController AdminController) HardDeleteAllAdmins(c echo.Context) error {
-	fmt.Println("HardDeleteAllAdmins")
-
-	ctx := c.Request().Context()
-	err := AdminController.AdminUseCase.HardDeleteAllAdmins(ctx)
-	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
-	}
-
-	return controllers.NewSuccessResponse(c, responses.FromDomain(admins.Domain{}))
-}

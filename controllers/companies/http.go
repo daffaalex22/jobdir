@@ -22,21 +22,6 @@ func NewCompanyController(CompanyUseCase companies.Usecase) *CompanyController {
 	}
 }
 
-// func (CompanyController CompanyController) Login(c echo.Context) error {
-// 	fmt.Println("Login")
-// 	CompanyLogin := requests.CompanyLogin{}
-// 	c.Bind(&CompanyLogin)
-
-// 	ctx := c.Request().Context()
-// 	Company, error := CompanyController.CompanyUseCase.Login(ctx, CompanyLogin.Email, CompanyLogin.Password)
-
-// 	if error != nil {
-// 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
-// 	}
-
-// 	return controllers.NewSuccessResponse(c, responses.FromDomain(Company))
-// }
-
 func (CompanyController CompanyController) GetCompanyById(c echo.Context) error {
 	fmt.Println("GetById")
 
@@ -111,16 +96,4 @@ func (CompanyController CompanyController) RegisterCompany(c echo.Context) error
 	}
 
 	return controllers.NewSuccessResponse(c, responses.FromDomain(company))
-}
-
-func (CompanyController CompanyController) HardDeleteAllCompanies(c echo.Context) error {
-	fmt.Println("HardDeleteAllcompanies")
-
-	ctx := c.Request().Context()
-	err := CompanyController.CompanyUseCase.HardDeleteAllCompanies(ctx)
-	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
-	}
-
-	return controllers.NewSuccessResponse(c, responses.FromDomain(companies.Domain{}))
 }

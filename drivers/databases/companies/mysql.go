@@ -85,20 +85,3 @@ func (rep *MysqlCompanyRepository) RegisterCompany(ctx context.Context, domain c
 
 	return Company.ToDomain(), nil
 }
-
-func (rep *MysqlCompanyRepository) HardDeleteAllCompanies(ctx context.Context) error {
-	var Company []Companies
-	result := rep.Conn.Find(&Company)
-
-	if result.Error != nil {
-		return result.Error
-	}
-
-	result = rep.Conn.Unscoped().Delete(&Company)
-
-	if result.Error != nil {
-		return result.Error
-	}
-
-	return nil
-}

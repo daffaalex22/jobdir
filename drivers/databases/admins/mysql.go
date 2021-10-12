@@ -73,10 +73,12 @@ func (rep *MysqlAdminRepository) UpdateAdmin(ctx context.Context, domain admins.
 		return admins.Domain{}, result.Error
 	}
 
-	if result.Error != nil {
-		return admins.Domain{}, result.Error
+	hashedPassword, err := encrypt.Hash(domain.Password)
+	if err != nil {
+		return admins.Domain{}, err
 	}
 
+	domain.Password = hashedPassword
 	result = rep.Conn.Model(&admin).Updates(FromDomain(domain))
 
 	if result.Error != nil {
@@ -120,21 +122,4 @@ func (rep *MysqlAdminRepository) RegisterAdmin(ctx context.Context, domain admin
 	}
 
 	return admin.ToDomain(), nil
-}
-
-func (rep *MysqlAdminRepository) HardDeleteAllAdmins(ctx context.Context) error {
-	var Admin []Admins
-	result := rep.Conn.Find(&Admin)
-
-	if result.Error != nil {
-		return result.Error
-	}
-
-	result = rep.Conn.Unscoped().Delete(&Admin)
-
-	if result.Error != nil {
-		return result.Error
-	}
-
-	return nil
 }

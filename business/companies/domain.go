@@ -26,7 +26,6 @@ type Usecase interface {
 	GetAllCompany(ctx context.Context) ([]Domain, error)
 	UpdateCompany(ctx context.Context, domain Domain) (Domain, error)
 	DeleteCompany(ctx context.Context, id int) (Domain, error)
-	HardDeleteAllCompanies(ctx context.Context) error
 }
 
 type Repository interface {
@@ -35,5 +34,4 @@ type Repository interface {
 	GetAllCompany(ctx context.Context) ([]Domain, error)
 	UpdateCompany(ctx context.Context, domain Domain) (Domain, error)
 	DeleteCompany(ctx context.Context, id int) (Domain, error)
-	HardDeleteAllCompanies(ctx context.Context) error
 }

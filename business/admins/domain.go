@@ -27,7 +27,6 @@ type Usecase interface {
 	GetAllAdmin(ctx context.Context) ([]Domain, error)
 	UpdateAdmin(ctx context.Context, domain Domain) (Domain, error)
 	DeleteAdmin(ctx context.Context, id int) (Domain, error)
-	HardDeleteAllAdmins(ctx context.Context) error
 }
 
 type Repository interface {
@@ -37,5 +36,4 @@ type Repository interface {
 	GetAllAdmin(ctx context.Context) ([]Domain, error)
 	UpdateAdmin(ctx context.Context, domain Domain) (Domain, error)
 	DeleteAdmin(ctx context.Context, id int) (Domain, error)
-	HardDeleteAllAdmins(ctx context.Context) error
 }
