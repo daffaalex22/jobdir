@@ -72,7 +72,6 @@ func (uc *UserUsecase) UpdateUser(c context.Context, domain Domain) (Domain, err
 	ctx, cancel := context.WithTimeout(c, uc.contextTimeout)
 	defer cancel()
 
-	// domain.UpdatedAt = time.Now()
 	user, err := uc.Repo.UpdateUser(ctx, domain)
 	if err != nil {
 		return Domain{}, err
