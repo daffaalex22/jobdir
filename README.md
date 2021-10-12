@@ -20,6 +20,7 @@ The database management system used are both SQL and NoSQL:
 The deployment of the project uses:
 * Docker; and 
 * Amazon Web Services (AWS) EC2
+
 Continuous Integration and Continuous Deployment (CI/CD) using GitHub Actions is implemented to automate the deployment process.
 
 ## Clean Architecture
