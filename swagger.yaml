@@ -1,0 +1,755 @@
+---
+openapi: 3.0.0
+info:
+  title: JobDir
+  contact: {}
+  version: "3.0"
+servers:
+- url: http://example.com
+security:
+- httpBearer: []
+tags:
+- name: Users
+- name: Admins
+- name: Application
+- name: Category
+- name: Company
+- name: Job
+paths:
+  /users/register:
+    post:
+      tags:
+      - Users
+      summary: Register User
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserRequest'
+            example:
+              email: daffa@bandung.swag
+              password: sepatuNike11
+              name: Daff
+              address: Belanda
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /users/login:
+    post:
+      tags:
+      - Users
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+            example:
+              email: daffa@bandung.swag
+              password: sepatuNike11
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /users/{userId}:
+    get:
+      tags:
+      - Users
+      summary: Get User By Id
+      operationId: GetUserById
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      responses:
+        "200": {}
+      deprecated: false
+    delete:
+      tags:
+      - Users
+      summary: Delete User By Id
+      operationId: DeleteUserById
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 9
+      responses:
+        "200": {}
+      deprecated: false
+  /users:
+    get:
+      tags:
+      - Users
+      summary: Get All Users
+      operationId: GetAllUsers
+      parameters: []
+      responses:
+        "200": {}
+      deprecated: false
+    put:
+      tags:
+      - Users
+      summary: Update User
+      operationId: UpdateUser
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+            example:
+              email: daffa@bandung.swag
+              password: sepatuNike11
+              name: Aleks
+              address: Belanda
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /admins/login:
+    post:
+      tags:
+      - Admins
+      summary: Login Admin
+      operationId: LoginAdmin
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginAdminRequest'
+            example:
+              email: daffa@bandung.oke
+              password: sepatuNike11
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /admins/register:
+    post:
+      tags:
+      - Admins
+      summary: Register Admin
+      operationId: RegisterAdmin
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterAdminRequest'
+            example:
+              email: daffa@bandung.oke
+              password: sepatuNike11
+              name: Daff
+              address: Belanda
+              companyId: 1
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /admins:
+    get:
+      tags:
+      - Admins
+      summary: Get All Admins
+      operationId: GetAllAdmins
+      parameters: []
+      responses:
+        "200": {}
+      deprecated: false
+    put:
+      tags:
+      - Admins
+      summary: Update Admin
+      operationId: UpdateAdmin
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdminRequest'
+            example:
+              email: daffa@bandung.oke
+              password: sepatuNike11
+              name: Aldos
+              address: Belanda
+              companyId: 1
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /admins/{adminId}:
+    get:
+      tags:
+      - Admins
+      summary: Get Admin By Id
+      operationId: GetAdminById
+      parameters:
+      - name: adminId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 2
+      responses:
+        "200": {}
+      deprecated: false
+    delete:
+      tags:
+      - Admins
+      summary: Delete Admin By Id
+      operationId: DeleteAdminById
+      parameters:
+      - name: adminId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 4
+      responses:
+        "200": {}
+      deprecated: false
+  /applications:
+    get:
+      tags:
+      - Application
+      summary: Get All Applications
+      operationId: GetAllApplications
+      parameters: []
+      responses:
+        "200": {}
+      deprecated: false
+    post:
+      tags:
+      - Application
+      summary: Register Application
+      operationId: RegisterApplication
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterApplicationRequest'
+            example:
+              userId: 1
+              jobId: 2
+              status: APPLYING
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /jobs/categories:
+    get:
+      tags:
+      - Category
+      summary: Get All Categories
+      operationId: GetAllCategories
+      parameters: []
+      responses:
+        "200": {}
+      deprecated: false
+    post:
+      tags:
+      - Category
+      summary: Create Category
+      operationId: CreateCategory
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryRequest'
+            example:
+              category: All Others
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /jobs/categories/{categoryId}:
+    get:
+      tags:
+      - Category
+      summary: Get Category By Id
+      operationId: GetCategoryById
+      parameters:
+      - name: categoryId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      responses:
+        "200": {}
+      deprecated: false
+    delete:
+      tags:
+      - Category
+      summary: Delete Category By Id
+      operationId: DeleteCategoryById
+      parameters:
+      - name: categoryId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 2
+      responses:
+        "200": {}
+      deprecated: false
+  /companies/register:
+    post:
+      tags:
+      - Company
+      summary: Register Company
+      operationId: RegisterCompany
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterCompanyRequest'
+            example:
+              name: Grab
+              address: Indonesia
+              description: A Cool Startup kinda thing
+              isTopCompany: true
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /companies:
+    get:
+      tags:
+      - Company
+      summary: Get All Companies
+      operationId: GetAllCompanies
+      parameters: []
+      responses:
+        "200": {}
+      deprecated: false
+    put:
+      tags:
+      - Company
+      summary: Update Company
+      operationId: UpdateCompany
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCompanyRequest'
+            example:
+              name: Grab
+              address: Indonesia
+              description: A Cool Startup kinda thing
+              isTopCompany: true
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /companies/{companyId}:
+    get:
+      tags:
+      - Company
+      summary: Get Company By Id
+      operationId: GetCompanyById
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      responses:
+        "200": {}
+      deprecated: false
+    delete:
+      tags:
+      - Company
+      summary: Delete Company By Id
+      operationId: DeleteCompanyById
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 2
+      responses:
+        "200": {}
+      deprecated: false
+  /jobs/search:
+    get:
+      tags:
+      - Job
+      summary: Search Jobs By Title
+      operationId: SearchJobsByTitle
+      parameters:
+      - name: title
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: stac
+      responses:
+        "200": {}
+      deprecated: false
+  /jobs:
+    get:
+      tags:
+      - Job
+      summary: Get All Jobs
+      operationId: GetAllJobs
+      parameters: []
+      responses:
+        "200": {}
+      deprecated: false
+    post:
+      tags:
+      - Job
+      summary: Create Job
+      operationId: CreateJob
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateJobRequest'
+            example:
+              title: Software Engineer
+              categoryId: 1
+              jobDesc: All IT stuff must be done
+              createdBy: 2
+              companyId: 1
+        required: true
+      responses:
+        "200": {}
+      deprecated: false
+  /jobs/filter:
+    get:
+      tags:
+      - Job
+      summary: FIlter Jobs By Category
+      operationId: FIlterJobsByCategory
+      parameters:
+      - name: categoryId
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      responses:
+        "200": {}
+      deprecated: false
+  /jobs/{jobId}:
+    get:
+      tags:
+      - Job
+      summary: Get Job By Id
+      operationId: GetJobById
+      parameters:
+      - name: jobId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      responses:
+        "200": {}
+      deprecated: false
+    delete:
+      tags:
+      - Job
+      summary: Delete Job By Id
+      operationId: DeleteJobById
+      parameters:
+      - name: jobId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 3
+      responses:
+        "200": {}
+      deprecated: false
+components:
+  schemas:
+    RegisterUserRequest:
+      title: RegisterUserRequest
+      required:
+      - address
+      - email
+      - name
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+      example:
+        email: daffa@bandung.swag
+        password: sepatuNike11
+        name: Daff
+        address: Belanda
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: daffa@bandung.swag
+        password: sepatuNike11
+    UpdateUserRequest:
+      title: UpdateUserRequest
+      required:
+      - address
+      - email
+      - name
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+      example:
+        email: daffa@bandung.swag
+        password: sepatuNike11
+        name: Aleks
+        address: Belanda
+    LoginAdminRequest:
+      title: LoginAdminRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: daffa@bandung.oke
+        password: sepatuNike11
+    RegisterAdminRequest:
+      title: RegisterAdminRequest
+      required:
+      - address
+      - companyId
+      - email
+      - name
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        companyId:
+          type: integer
+          format: int32
+      example:
+        email: daffa@bandung.oke
+        password: sepatuNike11
+        name: Daff
+        address: Belanda
+        companyId: 1
+    UpdateAdminRequest:
+      title: UpdateAdminRequest
+      required:
+      - address
+      - companyId
+      - email
+      - name
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        companyId:
+          type: integer
+          format: int32
+      example:
+        email: daffa@bandung.oke
+        password: sepatuNike11
+        name: Aldos
+        address: Belanda
+        companyId: 1
+    RegisterApplicationRequest:
+      title: RegisterApplicationRequest
+      required:
+      - jobId
+      - status
+      - userId
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int32
+        jobId:
+          type: integer
+          format: int32
+        status:
+          type: string
+      example:
+        userId: 1
+        jobId: 2
+        status: APPLYING
+    CreateCategoryRequest:
+      title: CreateCategoryRequest
+      required:
+      - category
+      type: object
+      properties:
+        category:
+          type: string
+      example:
+        category: All Others
+    RegisterCompanyRequest:
+      title: RegisterCompanyRequest
+      required:
+      - address
+      - description
+      - isTopCompany
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        description:
+          type: string
+        isTopCompany:
+          type: boolean
+      example:
+        name: Grab
+        address: Indonesia
+        description: A Cool Startup kinda thing
+        isTopCompany: true
+    UpdateCompanyRequest:
+      title: UpdateCompanyRequest
+      required:
+      - address
+      - description
+      - isTopCompany
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        description:
+          type: string
+        isTopCompany:
+          type: boolean
+      example:
+        name: Grab
+        address: Indonesia
+        description: A Cool Startup kinda thing
+        isTopCompany: true
+    CreateJobRequest:
+      title: CreateJobRequest
+      required:
+      - categoryId
+      - companyId
+      - createdBy
+      - jobDesc
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        categoryId:
+          type: integer
+          format: int32
+        jobDesc:
+          type: string
+        createdBy:
+          type: integer
+          format: int32
+        companyId:
+          type: integer
+          format: int32
+      example:
+        title: Software Engineer
+        categoryId: 1
+        jobDesc: All IT stuff must be done
+        createdBy: 2
+        companyId: 1
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
