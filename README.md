@@ -1,5 +1,10 @@
 # jobdir
 
+## Documentation
+Access the following URI to view list of possible routes to access:
+<br>
+https://app.swaggerhub.com/apis-docs/daffaalex22/jobdir/3.0
+
 ## Description
 This project is created during the [Kemendikbud's Kampus Merdeka Program](https://kampusmerdeka.kemdikbud.go.id/) that the owner do on since August 2021. [Alterra Academy](https://academy.alterra.id/) is where the owner do the Independent Study (SI). Other than following a 3 hours daily live session, 3 hours daily self-learning and a daily tasks, participants are instructed to develop a RESTful API implementing all of the material that have been studied. 
 
