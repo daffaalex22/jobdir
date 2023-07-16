@@ -7,11 +7,11 @@
         "timeout": 2
     },
     "database": {
-        "host": "localhost",
-        "port": "3306",
+        "host": "containers-us-west-76.railway.app",
+        "port": "6899",
         "user": "root",
-        "pass": "haji12345",
-        "name": "jobdir"
+        "pass": "qpZbgxb59iNWNXJJPHMd",
+        "name": "railway"
     },
     "jwt": {
         "secret": "KECOAK#22",
