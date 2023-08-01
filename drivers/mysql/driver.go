@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"fmt"
 	"log"
 
 	"gorm.io/driver/mysql"
@@ -17,14 +16,16 @@ type ConfigDB struct {
 }
 
 func (config *ConfigDB) InitialDB() *gorm.DB {
-	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local",
-		config.DB_Username,
-		config.DB_Password,
-		config.DB_Host,
-		config.DB_Port,
-		config.DB_Database)
+	// dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local",
+	// 	config.DB_Username,
+	// 	config.DB_Password,
+	// 	config.DB_Host,
+	// 	config.DB_Port,
+	// 	config.DB_Database)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open("mvinqj05barwi5e9xz3l:pscale_pw_4OJy6XubM9vMuCBrNzXJcX7DitlgE98J0fJg4MSuRfP@tcp(aws.connect.psdb.cloud)/free-mysql-db?tls=true&charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		log.Fatal(err)
 	}

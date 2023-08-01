@@ -7,11 +7,11 @@
         "timeout": 2
     },
     "database": {
-        "host": "containers-us-west-76.railway.app",
-        "port": "6899",
-        "user": "root",
-        "pass": "qpZbgxb59iNWNXJJPHMd",
-        "name": "railway"
+        "host": "aws.connect.psdb.cloud",
+        "port": "80",
+        "user": "mvinqj05barwi5e9xz3l",
+        "pass": "pscale_pw_4OJy6XubM9vMuCBrNzXJcX7DitlgE98J0fJg4MSuRfP",
+        "name": "free-mysql-db"
     },
     "jwt": {
         "secret": "KECOAK#22",
