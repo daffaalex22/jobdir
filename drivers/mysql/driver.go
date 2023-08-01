@@ -23,7 +23,7 @@ func (config *ConfigDB) InitialDB() *gorm.DB {
 	// 	config.DB_Port,
 	// 	config.DB_Database)
 
-	db, err := gorm.Open(mysql.Open("mvinqj05barwi5e9xz3l:pscale_pw_4OJy6XubM9vMuCBrNzXJcX7DitlgE98J0fJg4MSuRfP@tcp(aws.connect.psdb.cloud)/free-mysql-db?tls=true&charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{
+	db, err := gorm.Open(mysql.Open("fybj3svxffblmeccun9n:pscale_pw_rd4Swj1sYQ0sKW1wXDutWOO4xHJQBkR1kgc6s8jHxHy@tcp(aws.connect.psdb.cloud)/free-mysql-db?tls=true&charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
