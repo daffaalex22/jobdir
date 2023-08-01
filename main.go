@@ -54,11 +54,11 @@ func DbMigrate(db *gorm.DB) {
 
 func main() {
 	configDB := _mysqlDriver.ConfigDB{
-		DB_Username: viper.GetString(`database.user`),
-		DB_Password: viper.GetString(`database.pass`),
-		DB_Host:     viper.GetString(`database.host`),
-		DB_Port:     viper.GetString(`database.port`),
-		DB_Database: viper.GetString(`database.name`),
+		// DB_Username: viper.GetString(`database.user`),
+		// DB_Password: viper.GetString(`database.pass`),
+		// DB_Host:     viper.GetString(`database.host`),
+		// DB_Port:     viper.GetString(`database.port`),
+		// DB_Database: viper.GetString(`database.name`),
 	}
 
 	// configMongo := _mongoDriver.ConfigMongo{
