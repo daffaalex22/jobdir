@@ -2,7 +2,9 @@ package mysql
 
 import (
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -23,7 +25,12 @@ func (config *ConfigDB) InitialDB() *gorm.DB {
 	// 	config.DB_Port,
 	// 	config.DB_Database)
 
-	db, err := gorm.Open(mysql.Open("pbaits6psq4yjyy79cok:pscale_pw_ygfpuzJEU9PsJbwibLx2HBjBBCMOKew0fo5F4GDgHTb@tcp(aws.connect.psdb.cloud)/free-mysql-db?tls=true&charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Some error occured. Err: %s", err)
+	}
+
+	db, err := gorm.Open(mysql.Open(os.Getenv("DSN")), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
