@@ -1,7 +1,12 @@
 # jobdir
 
+## Live Preview
+🔗This REST API is accessible at https://job-directory-n9ak.onrender.com
+
+Check the following documentation to see the accessible routes.
+
 ## Documentation
-Access the following URI to view list of possible routes to access:
+📃Access the following URI to view list of possible routes to access:
 <br>
 https://app.swaggerhub.com/apis-docs/daffaalex22/jobdir/3.0
 
