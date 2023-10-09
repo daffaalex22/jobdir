@@ -6,6 +6,7 @@
 Try hitting `GET https://job-directory-n9ak.onrender.com/jobs`. Or check the following documentation to see the accessible routes. 
 
 ## For Employer
+The Live Preview is deployed using a free service (https://render.com and https://app.planetscale.com/) so sometimes the app is down and need restart.
 If you have trouble accessing or evaluating this personal project of mine, kindly contact me at
 ✉️: daffaalexander.work@gmail.com, CC: daffaalex22@gmail.com
 
