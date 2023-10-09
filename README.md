@@ -3,7 +3,11 @@
 ## Live Preview
 🔗This REST API is accessible at https://job-directory-n9ak.onrender.com
 
-Check the following documentation to see the accessible routes.
+Try hitting `GET https://job-directory-n9ak.onrender.com/jobs`. Or check the following documentation to see the accessible routes. 
+
+## For Employer
+If you have trouble accessing or evaluating this personal project of mine, kindly contact me at
+✉️: daffaalexander.work@gmail.com, CC: daffaalex22@gmail.com
 
 ## Documentation
 📃Access the following URI to view list of possible routes to access:
